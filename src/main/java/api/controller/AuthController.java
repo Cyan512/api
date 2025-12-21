@@ -23,10 +23,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest registerRequest) {
-
+        System.out.println("DTO fullName => " + registerRequest.getFullName());
         UserEntity userEntity = authMappper.registerRequestToUseEntity(registerRequest);
-
+        System.out.println("ENTITY fullName => " + userEntity.getFullName());
         return ResponseEntity.ok(authService.registerUser(userEntity));
+
     }
 
     @PostMapping("/authenticate")

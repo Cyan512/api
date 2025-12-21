@@ -4,7 +4,6 @@ import api.config.security.JwtService;
 import api.entity.UserEntity;
 import api.enums.UserRole;
 import api.models.request.AuthenticationRequest;
-import api.models.request.RegisterRequest;
 import api.models.response.AuthenticationResponse;
 import api.repository.UserRepository;
 import api.service.AuthService;
@@ -32,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
 
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         userEntity.setRole(UserRole.USER);
+
 
         userRepository.save(userEntity);
 

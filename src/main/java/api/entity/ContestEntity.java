@@ -1,12 +1,9 @@
 package api.entity;
 
-import api.enums.UserRole;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -14,24 +11,28 @@ import java.time.LocalDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")
-public class UserEntity {
+@Table(name = "contests")
+public class ContestEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "full_name", nullable = false, length = 150)
-    private String fullName;
+    @Column(nullable = false, length = 150)
+    private String title;
 
-    @Column(nullable = false, unique = true, length = 150)
-    private String email;
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
-    @Column(name = "password_hash", nullable = false)
-    private String password;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by", nullable = false)
+    private UserEntity createdBy;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private UserRole role;
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
