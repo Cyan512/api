@@ -8,10 +8,7 @@ import api.models.response.AuthenticationResponse;
 import api.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -22,16 +19,24 @@ public class AuthController {
     private final AuthMappper authMappper;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest registerRequest) {
+    public String register(@RequestBody RegisterRequest registerRequest) {
         System.out.println("DTO fullName => " + registerRequest.getFullName());
         UserEntity userEntity = authMappper.registerRequestToUseEntity(registerRequest);
         System.out.println("ENTITY fullName => " + userEntity.getFullName());
-        return ResponseEntity.ok(authService.registerUser(userEntity));
+        authService.registerUser(userEntity);
+        //return ResponseEntity.ok(authService.registerUser(userEntity));
+        return "Revisa tu correo para verificar tu cuenta";
 
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
         return ResponseEntity.ok(authService.authenticate(authenticationRequest));
+    }
+
+    @GetMapping("/verify")
+    public String verify(@RequestParam String token) {
+        authService.verifyEmail(token);
+        return "Cuenta verificada correctamente";
     }
 }

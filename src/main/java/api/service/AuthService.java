@@ -5,7 +5,9 @@ import api.models.request.AuthenticationRequest;
 import api.models.response.AuthenticationResponse;
 
 public interface AuthService {
-    AuthenticationResponse registerUser(UserEntity userEntity);
+    void registerUser(UserEntity userEntity);
 
     AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest);
+
+    void verifyEmail(String token);
 }

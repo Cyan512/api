@@ -33,6 +33,12 @@ public class UserEntity {
     @Column(nullable = false, length = 20)
     private UserRole role;
 
+    @Column(nullable = false)
+    private boolean enabled = false;
+
+    @Column(name = "verification_token", unique = true)
+    private String verificationToken;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
