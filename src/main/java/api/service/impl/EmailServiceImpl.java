@@ -16,7 +16,7 @@ public class EmailServiceImpl {
         message.setSubject("Verifica tu cuenta");
         message.setText(
                 "Haz clic para verificar tu cuenta:\n\n" +
-                        "http://localhost:8080/api/auth/verify?token=" + token
+                        "https://contests-api.up.railway.app/api/auth/verify?token=" + token
         );
 
         mailSender.send(message);
