@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
 
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         userEntity.setRole(UserRole.USER);
-        userEntity.setEnabled(false);
+        userEntity.setEnabled(true);
         userEntity.setVerificationToken(token);
 
         userRepository.save(userEntity);

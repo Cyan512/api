@@ -12,7 +12,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
     hibernate:
-      ddl-auto: validate   # ✅ NUNCA create-drop en prod
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: false
@@ -33,7 +33,7 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
-        debug: false   # ponlo en true solo para probar
+        debug: false
 
 server:
   port: 8080
