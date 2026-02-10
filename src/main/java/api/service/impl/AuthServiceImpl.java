@@ -36,12 +36,12 @@ public class AuthServiceImpl implements AuthService {
 
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         userEntity.setRole(UserRole.USER);
-        userEntity.setEnabled(true);
+        userEntity.setEnabled(false);
         userEntity.setVerificationToken(token);
 
         userRepository.save(userEntity);
 
-        String jwtToken = jwtService.generateToken(userEntity.getEmail());
+        //String jwtToken = jwtService.generateToken(userEntity.getEmail());
         emailService.sendVerificationEmail(userEntity.getEmail(), token);
         //return AuthenticationResponse.builder().token(jwtToken).build();
     }
@@ -59,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
 
         String jwtToken = jwtService.generateToken(user.getEmail());
 
-        return AuthenticationResponse.builder().token(jwtToken).build();
+            return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
     public void verifyEmail(String token) {

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl {
-    private final JavaMailSender mailSender;
+    private final JavaMailSender javaMailSender;
 
     public void sendVerificationEmail(String to, String token) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -16,9 +16,9 @@ public class EmailServiceImpl {
         message.setSubject("Verifica tu cuenta");
         message.setText(
                 "Haz clic para verificar tu cuenta:\n\n" +
-                        "https://contests-api.up.railway.app/api/auth/verify?token=" + token
+                        "http://localhost:8080/api/auth/verify?token=" + token
         );
 
-        mailSender.send(message);
+        javaMailSender.send(message);
     }
 }
