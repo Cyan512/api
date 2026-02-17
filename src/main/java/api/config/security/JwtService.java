@@ -2,26 +2,31 @@ package api.config.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
 public class JwtService {
 
-    private static final String SECRET_KEY = "clave_secreta_super_simple_1234567890_012345";
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60;
+    @Value("${jwt.SECRET_KEY}")
+    private String secretKey;
+
+    @Value("${jwt.EXPIRATION_TIME:3600000}") // Default 1 hora (3600000 ms)
+    private long expirationTime;
 
     private SecretKey getKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
     public String generateToken(String email){
         return Jwts.builder()
                 .subject(email)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .expiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(getKey())
                 .compact();
     }
