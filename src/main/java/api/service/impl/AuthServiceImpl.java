@@ -32,6 +32,9 @@ public class AuthServiceImpl implements AuthService {
         if (userRepository.findByEmail(userEntity.getEmail()).isPresent())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El correo ya esta registrado");
 
+        if (userRepository.findByUsername(userEntity.getUsername()).isPresent())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre de usuario ya esta en uso");
+
         String token = UUID.randomUUID().toString();
 
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
