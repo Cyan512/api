@@ -23,7 +23,7 @@ public class AuthController {
         System.out.println("DTO fullName => " + registerRequest.getFullName());
 
         UserEntity userEntity = authMappper.registerRequestToUseEntity(registerRequest);
-        System.out.println("ENTITY fullName => " + userEntity.getId());
+        System.out.println("ENTITY fullName => " + userEntity.getFullName());
 
         authService.registerUser(userEntity);
         //return ResponseEntity.ok(authService.registerUser(userEntity));
