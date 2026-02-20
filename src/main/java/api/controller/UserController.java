@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
@@ -37,5 +38,16 @@ public class UserController {
     @PatchMapping("/me")
     public ResponseEntity<UserResponse> updateProfile(@Valid @RequestBody UpdateUserRequest updateRequest) {
         return ResponseEntity.ok(userService.updateUser(updateRequest));
+    }
+
+    @Operation(
+        summary = "Buscar usuario por username (Admin)",
+        description = "Obtiene la información de un usuario específico por su username. Requiere rol ADMIN.",
+        security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @GetMapping("/{username}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserResponse> getUserByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(userService.getUserByUsername(username));
     }
 }
