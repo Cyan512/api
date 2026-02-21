@@ -7,4 +7,6 @@ public interface UserService {
     UserResponse getCurrentUser();
     
     UserResponse updateUser(UpdateUserRequest updateRequest);
+    
+    UserResponse getUserByUsername(String username);
 }

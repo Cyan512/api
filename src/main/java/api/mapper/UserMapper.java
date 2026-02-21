@@ -23,6 +23,7 @@ public interface UserMapper {
     @Mapping(target = "verificationToken", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    // Ignoramos password y username aquí porque los manejamos manualmente en el servicio con lógica extra
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "username", ignore = true)
     void updateUserFromRequest(UpdateUserRequest request, @MappingTarget UserEntity entity);

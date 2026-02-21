@@ -56,6 +56,13 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponse(updatedUser);
     }
 
+    @Override
+    public UserResponse getUserByUsername(String username) {
+        UserEntity user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + username));
+        return userMapper.toResponse(user);
+    }
+
     private AuthUser getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

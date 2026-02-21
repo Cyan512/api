@@ -20,4 +20,7 @@ public class UpdateUserRequest {
 
     @Size(min = 6, max = 50, message = "La contraseña debe tener entre 6 y 50 caracteres")
     private String password;
+
+    // Aquí puedes añadir más campos en el futuro (biografía, teléfono, etc.)
+    // NO incluir: id, email, role, enabled
 }
