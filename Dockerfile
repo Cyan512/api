@@ -1,4 +1,4 @@
-From openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jdk-jammy
 ARG JAR_FILE=target/api-0.0.1.jar
 COPY ${JAR_FILE} app_api.jar
 EXPOSE 8081
