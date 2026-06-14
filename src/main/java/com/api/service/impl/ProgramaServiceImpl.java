@@ -87,6 +87,48 @@ public class ProgramaServiceImpl implements ProgramaService {
         return programaRepository.save(programa);
     }
 
+    @Override
+    @Transactional
+    public Programa updatePrograma(String slug, ProgramaRequest request) {
+        var programa = getProgramaBySlug(slug);
+
+        var tipoPrograma = tipoProgramaRepository.findById(request.idTipoPrograma())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Tipo de programa no encontrado con id: " + request.idTipoPrograma()
+                ));
+
+        var facultad = facultadRepository.findById(request.idFacultad())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Facultad no encontrada con id: " + request.idFacultad()
+                ));
+
+        var newSlug = generarSlug(request.nombre());
+
+        if (!newSlug.equals(slug) && programaRepository.existsBySlug(newSlug)) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Ya existe un programa con el nombre: " + request.nombre()
+            );
+        }
+
+        programa.setIdTipoPrograma(tipoPrograma);
+        programa.setNombre(request.nombre());
+        programa.setIdFacultad(facultad);
+        programa.setSlug(newSlug);
+        programa.setConvocatoria(request.convocatoria());
+        programa.setModalidad(request.modalidad());
+        return programaRepository.save(programa);
+    }
+
+    @Override
+    @Transactional
+    public void deletePrograma(String slug) {
+        var programa = getProgramaBySlug(slug);
+        programaRepository.delete(programa);
+    }
+
     private String generarSlug(String nombre) {
         String slug = Normalizer.normalize(nombre, Normalizer.Form.NFD)
                 .replaceAll("[^\\p{ASCII}]", "")

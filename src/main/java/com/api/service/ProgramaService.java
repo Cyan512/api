@@ -10,4 +10,6 @@ public interface ProgramaService {
     List<Programa> getProgramas(String tipoSlug, String q, Modalidad modalidad, Long idFacultad, Boolean convocatoria);
     Programa getProgramaBySlug(String slug);
     Programa createPrograma(ProgramaRequest request);
+    Programa updatePrograma(String slug, ProgramaRequest request);
+    void deletePrograma(String slug);
 }

@@ -28,6 +28,16 @@ public class TipoProgramaServiceImpl implements TipoProgramaService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public TipoPrograma getTipoProgramaBySlug(String slug) {
+        return tipoProgramaRepository.findBySlug(slug)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Tipo de programa no encontrado con slug: " + slug
+                ));
+    }
+
+    @Override
     @Transactional
     public TipoPrograma createTipoPrograma(TipoProgramaRequest request) {
         var slug = generarSlug(request.nombre());
@@ -46,6 +56,33 @@ public class TipoProgramaServiceImpl implements TipoProgramaService {
                 .slug(slug)
                 .build();
         return tipoProgramaRepository.save(tipoPrograma);
+    }
+
+    @Override
+    @Transactional
+    public TipoPrograma updateTipoPrograma(String slug, TipoProgramaRequest request) {
+        var tipoPrograma = getTipoProgramaBySlug(slug);
+        var newSlug = generarSlug(request.nombre());
+
+        if (!newSlug.equals(slug) && tipoProgramaRepository.existsBySlug(newSlug)) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Ya existe un tipo de programa con el nombre: " + request.nombre()
+            );
+        }
+
+        tipoPrograma.setNombre(request.nombre());
+        tipoPrograma.setImagenCard(request.imagenCard());
+        tipoPrograma.setImagenBg(request.imagenBg());
+        tipoPrograma.setSlug(newSlug);
+        return tipoProgramaRepository.save(tipoPrograma);
+    }
+
+    @Override
+    @Transactional
+    public void deleteTipoPrograma(String slug) {
+        var tipoPrograma = getTipoProgramaBySlug(slug);
+        tipoProgramaRepository.delete(tipoPrograma);
     }
 
     private String generarSlug(String nombre) {

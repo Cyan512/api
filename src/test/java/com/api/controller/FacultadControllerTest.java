@@ -1,9 +1,14 @@
 package com.api.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -13,9 +18,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.api.config.GlobalExceptionHandler;
 import com.api.model.Facultad;
@@ -53,6 +60,27 @@ class FacultadControllerTest {
     }
 
     @Test
+    void obtenerPorId_returns200() throws Exception {
+        var facultad = Facultad.builder().id(1L).nombre("Ingeniería").build();
+        when(facultadService.getFacultadById(1L)).thenReturn(facultad);
+
+        mockMvc.perform(get("/api/v1/facultades/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.nombre").value("Ingeniería"));
+    }
+
+    @Test
+    void obtenerPorId_returns404() throws Exception {
+        when(facultadService.getFacultadById(99L))
+                .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Facultad no encontrada"));
+
+        mockMvc.perform(get("/api/v1/facultades/99"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.success").value(false));
+    }
+
+    @Test
     void crear_returns201() throws Exception {
         var facultad = Facultad.builder().id(1L).nombre("Ingeniería").build();
         when(facultadService.createFacultad(any())).thenReturn(facultad);
@@ -81,6 +109,48 @@ class FacultadControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false));
+    }
+
+    @Test
+    void actualizar_returns200() throws Exception {
+        var facultad = Facultad.builder().id(1L).nombre("Ingeniería Actualizada").build();
+        when(facultadService.updateFacultad(eq(1L), any())).thenReturn(facultad);
+
+        mockMvc.perform(put("/api/v1/facultades/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"nombre\":\"Ingeniería Actualizada\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.nombre").value("Ingeniería Actualizada"));
+    }
+
+    @Test
+    void actualizar_returns400_whenNombreIsBlank() throws Exception {
+        mockMvc.perform(put("/api/v1/facultades/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"nombre\":\"\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.message").value("Error de validación"));
+    }
+
+    @Test
+    void eliminar_returns200() throws Exception {
+        doNothing().when(facultadService).deleteFacultad(1L);
+
+        mockMvc.perform(delete("/api/v1/facultades/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true));
+    }
+
+    @Test
+    void eliminar_returns404() throws Exception {
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Facultad no encontrada"))
+                .when(facultadService).deleteFacultad(99L);
+
+        mockMvc.perform(delete("/api/v1/facultades/99"))
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.success").value(false));
     }
 }

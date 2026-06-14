@@ -1,8 +1,14 @@
 package com.api.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -12,9 +18,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.api.config.GlobalExceptionHandler;
 import com.api.dto.TipoProgramaRequest;
@@ -55,6 +63,27 @@ class TipoProgramaControllerTest {
     }
 
     @Test
+    void obtenerPorSlug_returns200() throws Exception {
+        var tipo = TipoPrograma.builder().id(1L).nombre("Pregrado").slug("pregrado").build();
+        when(tipoProgramaService.getTipoProgramaBySlug("pregrado")).thenReturn(tipo);
+
+        mockMvc.perform(get("/api/v1/tipos-programa/pregrado"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.nombre").value("Pregrado"));
+    }
+
+    @Test
+    void obtenerPorSlug_returns404() throws Exception {
+        when(tipoProgramaService.getTipoProgramaBySlug("inventado"))
+                .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Tipo de programa no encontrado"));
+
+        mockMvc.perform(get("/api/v1/tipos-programa/inventado"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.success").value(false));
+    }
+
+    @Test
     void crear_returns201() throws Exception {
         var tipo = TipoPrograma.builder().id(1L).nombre("Pregrado").slug("pregrado").build();
         when(tipoProgramaService.createTipoPrograma(new TipoProgramaRequest("Pregrado", null, null)))
@@ -87,5 +116,47 @@ class TipoProgramaControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Error de validación"));
+    }
+
+    @Test
+    void actualizar_returns200() throws Exception {
+        var tipo = TipoPrograma.builder().id(1L).nombre("Posgrado").slug("posgrado").build();
+        when(tipoProgramaService.updateTipoPrograma(eq("pregrado"), any())).thenReturn(tipo);
+
+        mockMvc.perform(put("/api/v1/tipos-programa/pregrado")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"nombre\":\"Posgrado\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.nombre").value("Posgrado"));
+    }
+
+    @Test
+    void actualizar_returns400_whenNombreIsBlank() throws Exception {
+        mockMvc.perform(put("/api/v1/tipos-programa/pregrado")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"nombre\":\"\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.message").value("Error de validación"));
+    }
+
+    @Test
+    void eliminar_returns200() throws Exception {
+        doNothing().when(tipoProgramaService).deleteTipoPrograma("pregrado");
+
+        mockMvc.perform(delete("/api/v1/tipos-programa/pregrado"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true));
+    }
+
+    @Test
+    void eliminar_returns404() throws Exception {
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Tipo de programa no encontrado"))
+                .when(tipoProgramaService).deleteTipoPrograma("inventado");
+
+        mockMvc.perform(delete("/api/v1/tipos-programa/inventado"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.success").value(false));
     }
 }

@@ -33,6 +33,16 @@ public class ProgramaCursoServiceImpl implements ProgramaCursoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public ProgramaCurso getProgramaCursoById(Long id) {
+        return programaCursoRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Asociación programa-curso no encontrada con id: " + id
+                ));
+    }
+
+    @Override
     @Transactional
     public ProgramaCurso createProgramaCurso(ProgramaCursoRequest request) {
         var programa = programaRepository.findById(request.idPrograma())
@@ -53,5 +63,36 @@ public class ProgramaCursoServiceImpl implements ProgramaCursoService {
                 .semestres(request.semestres())
                 .build();
         return programaCursoRepository.save(programaCurso);
+    }
+
+    @Override
+    @Transactional
+    public void deleteProgramaCurso(Long id) {
+        var programaCurso = getProgramaCursoById(id);
+        programaCursoRepository.delete(programaCurso);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProgramaCurso> getProgramaCursosByProgramaId(Long programaId) {
+        if (!programaRepository.existsById(programaId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Programa no encontrado con id: " + programaId
+            );
+        }
+        return programaCursoRepository.findByIdProgramaId(programaId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProgramaCurso> getProgramaCursosByCursoId(Long cursoId) {
+        if (!cursoRepository.existsById(cursoId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Curso no encontrado con id: " + cursoId
+            );
+        }
+        return programaCursoRepository.findByIdCursoId(cursoId);
     }
 }
