@@ -13,7 +13,7 @@ import com.api.service.CursoService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/cursos")
+@RequestMapping(value = "/api/cursos", version = "1")
 @CrossOrigin("*")
 @RequiredArgsConstructor
 public class CursoController {
