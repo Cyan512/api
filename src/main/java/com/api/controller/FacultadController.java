@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.api.dto.ApiResponse;
 import com.api.dto.FacultadRequest;
 import com.api.model.Facultad;
 import com.api.service.FacultadService;
@@ -28,17 +29,19 @@ public class FacultadController {
     private final FacultadService facultadService;
 
     @GetMapping
-    public List<Facultad> listar() {
-        return facultadService.getAllFacultades();
+    public ResponseEntity<ApiResponse<List<Facultad>>> listar() {
+        var facultades = facultadService.getAllFacultades();
+        return ResponseEntity.ok(ApiResponse.success(facultades, "Facultades obtenidas exitosamente"));
     }
 
     @PostMapping
-    public ResponseEntity<Facultad> crear(@Valid @RequestBody FacultadRequest request) {
+    public ResponseEntity<ApiResponse<Facultad>> crear(@Valid @RequestBody FacultadRequest request) {
         var facultad = facultadService.createFacultad(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(facultad.getId())
                 .toUri();
-        return ResponseEntity.created(location).body(facultad);
+        return ResponseEntity.created(location)
+                .body(ApiResponse.success(facultad, "Facultad creada exitosamente"));
     }
 }

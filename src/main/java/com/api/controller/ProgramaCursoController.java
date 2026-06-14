@@ -13,35 +13,35 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.api.dto.ApiResponse;
-import com.api.dto.TipoProgramaRequest;
-import com.api.model.TipoPrograma;
-import com.api.service.TipoProgramaService;
+import com.api.dto.ProgramaCursoRequest;
+import com.api.model.ProgramaCurso;
+import com.api.service.ProgramaCursoService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/tipos-programa")
+@RequestMapping("/api/v1/programas-cursos")
 @CrossOrigin("*")
 @RequiredArgsConstructor
-public class TipoProgramaController {
+public class ProgramaCursoController {
 
-    private final TipoProgramaService tipoProgramaService;
+    private final ProgramaCursoService programaCursoService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<TipoPrograma>>> listar() {
-        var tipos = tipoProgramaService.getAllTipoProgramas();
-        return ResponseEntity.ok(ApiResponse.success(tipos, "Tipos de programa obtenidos exitosamente"));
+    public ResponseEntity<ApiResponse<List<ProgramaCurso>>> listar() {
+        var programasCurso = programaCursoService.getAllProgramaCursos();
+        return ResponseEntity.ok(ApiResponse.success(programasCurso, "Programas-curso obtenidos exitosamente"));
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<TipoPrograma>> crear(@Valid @RequestBody TipoProgramaRequest request) {
-        var tipoPrograma = tipoProgramaService.createTipoPrograma(request);
+    public ResponseEntity<ApiResponse<ProgramaCurso>> crear(@Valid @RequestBody ProgramaCursoRequest request) {
+        var programaCurso = programaCursoService.createProgramaCurso(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(tipoPrograma.getId())
+                .buildAndExpand(programaCurso.getId())
                 .toUri();
         return ResponseEntity.created(location)
-                .body(ApiResponse.success(tipoPrograma, "Tipo de programa creado exitosamente"));
+                .body(ApiResponse.success(programaCurso, "Programa-curso creado exitosamente"));
     }
 }

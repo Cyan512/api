@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.api.dto.ApiResponse;
 import com.api.dto.ProgramaRequest;
 import com.api.model.Programa;
 import com.api.service.ProgramaService;
@@ -28,17 +29,19 @@ public class ProgramaController {
     private final ProgramaService programaService;
 
     @GetMapping
-    public List<Programa> listar() {
-        return programaService.getAllProgramas();
+    public ResponseEntity<ApiResponse<List<Programa>>> listar() {
+        var programas = programaService.getAllProgramas();
+        return ResponseEntity.ok(ApiResponse.success(programas, "Programas obtenidos exitosamente"));
     }
 
     @PostMapping
-    public ResponseEntity<Programa> crear(@Valid @RequestBody ProgramaRequest request) {
+    public ResponseEntity<ApiResponse<Programa>> crear(@Valid @RequestBody ProgramaRequest request) {
         var programa = programaService.createPrograma(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(programa.getId())
                 .toUri();
-        return ResponseEntity.created(location).body(programa);
+        return ResponseEntity.created(location)
+                .body(ApiResponse.success(programa, "Programa creado exitosamente"));
     }
 }

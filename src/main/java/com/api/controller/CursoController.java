@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.api.dto.ApiResponse;
 import com.api.dto.CursoRequest;
 import com.api.model.Curso;
 import com.api.service.CursoService;
@@ -27,17 +28,19 @@ public class CursoController {
     private final CursoService cursoService;
 
     @GetMapping("/v1/cursos")
-    public List<Curso> listar() {
-        return cursoService.getAllCursos();
+    public ResponseEntity<ApiResponse<List<Curso>>> listar() {
+        var cursos = cursoService.getAllCursos();
+        return ResponseEntity.ok(ApiResponse.success(cursos, "Cursos obtenidos exitosamente"));
     }
 
     @PostMapping("/v1/cursos")
-    public ResponseEntity<Curso> crear(@Valid @RequestBody CursoRequest request) {
+    public ResponseEntity<ApiResponse<Curso>> crear(@Valid @RequestBody CursoRequest request) {
         var curso = cursoService.createCurso(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(curso.getId())
                 .toUri();
-        return ResponseEntity.created(location).body(curso);
+        return ResponseEntity.created(location)
+                .body(ApiResponse.success(curso, "Curso creado exitosamente"));
     }
 }
