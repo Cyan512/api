@@ -34,6 +34,18 @@ public class ProgramaServiceImpl implements ProgramaService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<Programa> getProgramasByTipoSlug(String tipoSlug) {
+        if (!tipoProgramaRepository.existsBySlug(tipoSlug)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Tipo de programa no encontrado con slug: " + tipoSlug
+            );
+        }
+        return programaRepository.findByIdTipoProgramaSlug(tipoSlug);
+    }
+
+    @Override
     @Transactional
     public Programa createPrograma(ProgramaRequest request) {
         var tipoPrograma = tipoProgramaRepository.findById(request.idTipoPrograma())

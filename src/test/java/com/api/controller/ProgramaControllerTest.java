@@ -85,4 +85,27 @@ class ProgramaControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false));
     }
+
+    @Test
+    void listarPorTipo_returns200_withData() throws Exception {
+        var programa = Programa.builder().id(1L).nombre("Maestría en Sistemas").build();
+        when(programaService.getProgramasByTipoSlug("maestria"))
+                .thenReturn(List.of(programa));
+
+        mockMvc.perform(get("/api/v1/programas?tipoSlug=maestria"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data[0].nombre").value("Maestría en Sistemas"));
+    }
+
+    @Test
+    void listarPorTipo_returns200_withEmptyList() throws Exception {
+        when(programaService.getProgramasByTipoSlug("inventado"))
+                .thenReturn(List.of());
+
+        mockMvc.perform(get("/api/v1/programas?tipoSlug=inventado"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data").isEmpty());
+    }
 }

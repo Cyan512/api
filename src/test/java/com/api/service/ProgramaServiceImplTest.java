@@ -110,4 +110,25 @@ class ProgramaServiceImplTest {
         assertThrows(ResponseStatusException.class,
                 () -> programaService.createPrograma(request));
     }
+
+    @Test
+    void getByTipoSlug_returnsList() {
+        when(tipoProgramaRepository.existsBySlug("maestria")).thenReturn(true);
+        var programa = Programa.builder().id(1L).nombre("Maestría en Sistemas").build();
+        when(programaRepository.findByIdTipoProgramaSlug("maestria"))
+                .thenReturn(List.of(programa));
+
+        var result = programaService.getProgramasByTipoSlug("maestria");
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getNombre()).isEqualTo("Maestría en Sistemas");
+    }
+
+    @Test
+    void getByTipoSlug_throwsNotFound_whenSlugNotExists() {
+        when(tipoProgramaRepository.existsBySlug("inventado")).thenReturn(false);
+
+        assertThrows(ResponseStatusException.class,
+                () -> programaService.getProgramasByTipoSlug("inventado"));
+    }
 }

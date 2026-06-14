@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -29,8 +30,11 @@ public class ProgramaController {
     private final ProgramaService programaService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Programa>>> listar() {
-        var programas = programaService.getAllProgramas();
+    public ResponseEntity<ApiResponse<List<Programa>>> listar(
+            @RequestParam(required = false) String tipoSlug) {
+        var programas = tipoSlug != null
+                ? programaService.getProgramasByTipoSlug(tipoSlug)
+                : programaService.getAllProgramas();
         return ResponseEntity.ok(ApiResponse.success(programas, "Programas obtenidos exitosamente"));
     }
 
