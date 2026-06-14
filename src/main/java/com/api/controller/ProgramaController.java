@@ -1,15 +1,22 @@
 package com.api.controller;
 
+import java.net.URI;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.api.dto.ProgramaRequest;
 import com.api.model.Programa;
 import com.api.service.ProgramaService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -23,5 +30,15 @@ public class ProgramaController {
     @GetMapping
     public List<Programa> listar() {
         return programaService.getAllProgramas();
+    }
+
+    @PostMapping
+    public ResponseEntity<Programa> crear(@Valid @RequestBody ProgramaRequest request) {
+        var programa = programaService.createPrograma(request);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(programa.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(programa);
     }
 }
