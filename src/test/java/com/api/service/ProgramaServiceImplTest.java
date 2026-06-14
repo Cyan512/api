@@ -131,4 +131,22 @@ class ProgramaServiceImplTest {
         assertThrows(ResponseStatusException.class,
                 () -> programaService.getProgramasByTipoSlug("inventado"));
     }
+
+    @Test
+    void getBySlug_returnsPrograma() {
+        var programa = Programa.builder().id(1L).nombre("Ingeniería de Sistemas").slug("ingenieria-sistemas").build();
+        when(programaRepository.findBySlug("ingenieria-sistemas")).thenReturn(Optional.of(programa));
+
+        var result = programaService.getProgramaBySlug("ingenieria-sistemas");
+
+        assertThat(result.getNombre()).isEqualTo("Ingeniería de Sistemas");
+    }
+
+    @Test
+    void getBySlug_throwsNotFound_whenSlugNotExists() {
+        when(programaRepository.findBySlug("inventado")).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class,
+                () -> programaService.getProgramaBySlug("inventado"));
+    }
 }

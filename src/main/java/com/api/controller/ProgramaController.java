@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,12 @@ public class ProgramaController {
                 ? programaService.getProgramasByTipoSlug(tipoSlug)
                 : programaService.getAllProgramas();
         return ResponseEntity.ok(ApiResponse.success(programas, "Programas obtenidos exitosamente"));
+    }
+
+    @GetMapping("/{slug}")
+    public ResponseEntity<ApiResponse<Programa>> obtenerPorSlug(@PathVariable String slug) {
+        var programa = programaService.getProgramaBySlug(slug);
+        return ResponseEntity.ok(ApiResponse.success(programa, "Programa encontrado exitosamente"));
     }
 
     @PostMapping

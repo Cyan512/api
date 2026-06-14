@@ -8,5 +8,6 @@ import com.api.model.Programa;
 public interface ProgramaService {
     List<Programa> getAllProgramas();
     List<Programa> getProgramasByTipoSlug(String tipoSlug);
+    Programa getProgramaBySlug(String slug);
     Programa createPrograma(ProgramaRequest request);
 }

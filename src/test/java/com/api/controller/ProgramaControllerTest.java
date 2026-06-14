@@ -13,9 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.api.config.GlobalExceptionHandler;
 import com.api.dto.ProgramaRequest;
@@ -107,5 +109,26 @@ class ProgramaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").isEmpty());
+    }
+
+    @Test
+    void obtenerPorSlug_returns200() throws Exception {
+        var programa = Programa.builder().id(1L).nombre("Ingeniería de Sistemas").slug("ingenieria-sistemas").build();
+        when(programaService.getProgramaBySlug("ingenieria-sistemas")).thenReturn(programa);
+
+        mockMvc.perform(get("/api/v1/programas/ingenieria-sistemas"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.nombre").value("Ingeniería de Sistemas"));
+    }
+
+    @Test
+    void obtenerPorSlug_returns404() throws Exception {
+        when(programaService.getProgramaBySlug("inventado"))
+                .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Programa no encontrado"));
+
+        mockMvc.perform(get("/api/v1/programas/inventado"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.success").value(false));
     }
 }
