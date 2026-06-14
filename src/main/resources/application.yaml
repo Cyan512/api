@@ -16,6 +16,9 @@ spring:
         format_sql: true
 
 
+cors:
+  allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
+
 server:
   port: 8081
   forward-headers-strategy: framework
