@@ -1,5 +1,6 @@
 package com.api.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -37,7 +38,8 @@ public class Programa {
     @JoinColumn(name = "id_facultad")
     private Facultad idFacultad;
 
-    private Long slug;
+    @Column(unique = true)
+    private String slug;
 
     private Boolean convocatoria;
 

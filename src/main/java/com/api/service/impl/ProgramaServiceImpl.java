@@ -1,5 +1,6 @@
 package com.api.service.impl;
 
+import java.text.Normalizer;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -47,14 +48,35 @@ public class ProgramaServiceImpl implements ProgramaService {
                         "Facultad no encontrada con id: " + request.idFacultad()
                 ));
 
+        var slug = generarSlug(request.nombre());
+
+        if (programaRepository.existsBySlug(slug)) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Ya existe un programa con el nombre: " + request.nombre()
+            );
+        }
+
         var programa = Programa.builder()
                 .idTipoPrograma(tipoPrograma)
                 .nombre(request.nombre())
                 .idFacultad(facultad)
-                .slug(request.slug())
+                .slug(slug)
                 .convocatoria(request.convocatoria())
                 .modalidad(request.modalidad())
                 .build();
         return programaRepository.save(programa);
+    }
+
+    private String generarSlug(String nombre) {
+        String slug = Normalizer.normalize(nombre, Normalizer.Form.NFD)
+                .replaceAll("[^\\p{ASCII}]", "")
+                .toLowerCase()
+                .replaceAll("[^a-z0-9\\s-]", "")
+                .replaceAll("\\s+", "-")
+                .replaceAll("-+", "-")
+                .replaceAll("^-|-$", "");
+
+        return slug.isBlank() ? "sin-nombre" : slug;
     }
 }

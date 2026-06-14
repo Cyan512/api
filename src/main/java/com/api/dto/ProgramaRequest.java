@@ -15,8 +15,6 @@ public record ProgramaRequest(
     @NotNull(message = "La facultad es obligatoria")
     Long idFacultad,
 
-    Long slug,
-
     Boolean convocatoria,
 
     @NotNull(message = "La modalidad es obligatoria")
