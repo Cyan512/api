@@ -1,6 +1,7 @@
 package com.api.service.impl;
 
 import java.text.Normalizer;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,12 @@ import lombok.RequiredArgsConstructor;
 public class TipoProgramaServiceImpl implements TipoProgramaService {
 
     private final TipoProgramaRepository tipoProgramaRepository;
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TipoPrograma> getAllTipoProgramas() {
+        return tipoProgramaRepository.findAll();
+    }
 
     @Override
     @Transactional
