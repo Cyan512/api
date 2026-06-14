@@ -11,6 +11,8 @@ services:
       timeout: 5s
       retries: 5
     restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     
   api:
     build: .
@@ -25,4 +27,10 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       JPA_DDL_AUTO: ${JPA_DDL_AUTO}
       JPA_SHOW_SQL: ${JPA_SHOW_SQL}
+    depends_on:
+      postgres:
+        condition: service_healthy
     restart: always
+
+volumes:
+  postgres_data:
