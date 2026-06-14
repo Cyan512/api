@@ -30,7 +30,8 @@ public class TipoPrograma {
     private String imagenCard;
 
     @Column(name = "imagen_bg")
-    private Long imagenBg;
+    private String imagenBg;
 
+    @Column(unique = true)
     private String slug;
 }
