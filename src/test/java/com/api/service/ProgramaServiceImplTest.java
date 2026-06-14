@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.api.dto.ProgramaRequest;
@@ -42,9 +43,9 @@ class ProgramaServiceImplTest {
     private ProgramaServiceImpl programaService;
 
     @Test
-    void getProgramas_withoutFilters_callsFindAllWithFilters() {
+    void getProgramas_withoutFilters_callsFindAll() {
         var programa = Programa.builder().id(1L).nombre("Ingeniería").build();
-        when(programaRepository.findAllWithFilters(null, null, null, null, null))
+        when(programaRepository.findAll(any(Specification.class)))
                 .thenReturn(List.of(programa));
 
         var result = programaService.getProgramas(null, null, null, null, null);
@@ -53,10 +54,10 @@ class ProgramaServiceImplTest {
     }
 
     @Test
-    void getProgramas_withAllFilters_callsFindAllWithFilters() {
+    void getProgramas_withAllFilters_callsFindAll() {
         when(tipoProgramaRepository.existsBySlug("maestria")).thenReturn(true);
         var programa = Programa.builder().id(1L).nombre("Maestría en Sistemas").build();
-        when(programaRepository.findAllWithFilters("maestria", "sistemas", Modalidad.VIRTUAL, 1L, true))
+        when(programaRepository.findAll(any(Specification.class)))
                 .thenReturn(List.of(programa));
 
         var result = programaService.getProgramas("maestria", "sistemas", Modalidad.VIRTUAL, 1L, true);

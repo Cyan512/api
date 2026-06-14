@@ -15,6 +15,7 @@ import com.api.model.Programa;
 import com.api.model.TipoPrograma;
 import com.api.repository.FacultadRepository;
 import com.api.repository.ProgramaRepository;
+import com.api.repository.ProgramaSpecification;
 import com.api.repository.TipoProgramaRepository;
 import com.api.service.ProgramaService;
 
@@ -37,7 +38,8 @@ public class ProgramaServiceImpl implements ProgramaService {
                     "Tipo de programa no encontrado con slug: " + tipoSlug
             );
         }
-        return programaRepository.findAllWithFilters(tipoSlug, q, modalidad, idFacultad, convocatoria);
+        var spec = ProgramaSpecification.conFiltros(tipoSlug, q, modalidad, idFacultad, convocatoria);
+        return programaRepository.findAll(spec);
     }
 
     @Override
