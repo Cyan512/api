@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.api.dto.ProgramaRequest;
 import com.api.model.Facultad;
+import com.api.model.Modalidad;
 import com.api.model.Programa;
 import com.api.model.TipoPrograma;
 import com.api.repository.FacultadRepository;
@@ -29,20 +30,14 @@ public class ProgramaServiceImpl implements ProgramaService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Programa> getAllProgramas() {
-        return programaRepository.findAll();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Programa> getProgramasByTipoSlug(String tipoSlug) {
-        if (!tipoProgramaRepository.existsBySlug(tipoSlug)) {
+    public List<Programa> getProgramas(String tipoSlug, String q, Modalidad modalidad, Long idFacultad, Boolean convocatoria) {
+        if (tipoSlug != null && !tipoProgramaRepository.existsBySlug(tipoSlug)) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     "Tipo de programa no encontrado con slug: " + tipoSlug
             );
         }
-        return programaRepository.findByIdTipoProgramaSlug(tipoSlug);
+        return programaRepository.findAllWithFilters(tipoSlug, q, modalidad, idFacultad, convocatoria);
     }
 
     @Override

@@ -16,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.api.dto.ApiResponse;
 import com.api.dto.ProgramaRequest;
+import com.api.model.Modalidad;
 import com.api.model.Programa;
 import com.api.service.ProgramaService;
 
@@ -32,10 +33,12 @@ public class ProgramaController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<Programa>>> listar(
-            @RequestParam(required = false) String tipoSlug) {
-        var programas = tipoSlug != null
-                ? programaService.getProgramasByTipoSlug(tipoSlug)
-                : programaService.getAllProgramas();
+            @RequestParam(required = false) String tipoSlug,
+            @RequestParam(required = false) String q,
+            @RequestParam(required = false) Modalidad modalidad,
+            @RequestParam(required = false) Long idFacultad,
+            @RequestParam(required = false) Boolean convocatoria) {
+        var programas = programaService.getProgramas(tipoSlug, q, modalidad, idFacultad, convocatoria);
         return ResponseEntity.ok(ApiResponse.success(programas, "Programas obtenidos exitosamente"));
     }
 

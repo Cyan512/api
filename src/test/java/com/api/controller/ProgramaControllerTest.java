@@ -24,6 +24,7 @@ import com.api.dto.ProgramaRequest;
 import com.api.model.Modalidad;
 import com.api.model.Programa;
 import com.api.service.ProgramaService;
+import com.api.service.ProgramaService;
 
 @WebMvcTest(ProgramaController.class)
 @Import(GlobalExceptionHandler.class)
@@ -36,8 +37,8 @@ class ProgramaControllerTest {
     private ProgramaService programaService;
 
     @Test
-    void listar_returns200_withEmptyList() throws Exception {
-        when(programaService.getAllProgramas()).thenReturn(List.of());
+    void listar_sinFiltros_returns200() throws Exception {
+        when(programaService.getProgramas(null, null, null, null, null)).thenReturn(List.of());
 
         mockMvc.perform(get("/api/v1/programas"))
                 .andExpect(status().isOk())
@@ -46,14 +47,15 @@ class ProgramaControllerTest {
     }
 
     @Test
-    void listar_returns200_withData() throws Exception {
-        var programa = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
-        when(programaService.getAllProgramas()).thenReturn(List.of(programa));
+    void listar_conTodosLosFiltros_returns200() throws Exception {
+        var programa = Programa.builder().id(1L).nombre("Maestría en Sistemas").build();
+        when(programaService.getProgramas("maestria", "sistemas", Modalidad.VIRTUAL, 1L, true))
+                .thenReturn(List.of(programa));
 
-        mockMvc.perform(get("/api/v1/programas"))
+        mockMvc.perform(get("/api/v1/programas?tipoSlug=maestria&q=sistemas&modalidad=VIRTUAL&idFacultad=1&convocatoria=true"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data[0].nombre").value("Ingeniería"));
+                .andExpect(jsonPath("$.data[0].nombre").value("Maestría en Sistemas"));
     }
 
     @Test
@@ -86,29 +88,6 @@ class ProgramaControllerTest {
                         .content("{}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false));
-    }
-
-    @Test
-    void listarPorTipo_returns200_withData() throws Exception {
-        var programa = Programa.builder().id(1L).nombre("Maestría en Sistemas").build();
-        when(programaService.getProgramasByTipoSlug("maestria"))
-                .thenReturn(List.of(programa));
-
-        mockMvc.perform(get("/api/v1/programas?tipoSlug=maestria"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data[0].nombre").value("Maestría en Sistemas"));
-    }
-
-    @Test
-    void listarPorTipo_returns200_withEmptyList() throws Exception {
-        when(programaService.getProgramasByTipoSlug("inventado"))
-                .thenReturn(List.of());
-
-        mockMvc.perform(get("/api/v1/programas?tipoSlug=inventado"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data").isEmpty());
     }
 
     @Test
