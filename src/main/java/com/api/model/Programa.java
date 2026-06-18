@@ -27,22 +27,36 @@ public class Programa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "id_tipo_programa")
-    private TipoPrograma idTipoPrograma;
-
+    
     private String nombre;
+
+    @Column(unique = true)
+    private String slug;
+
+    private String imagen;
+
+    private Boolean convocatoria;
+    
+    @Column(name = "objetivo_general")
+    private String objetivoGeneral;
+
+    @Column(name = "objetivos_especificos")
+    private String objetivosEspecificos;
+
+    @Column(name = "perfil_posgraduado")
+    private String perfilPosgraduado;
 
     @ManyToOne
     @JoinColumn(name = "id_facultad")
     private Facultad idFacultad;
 
-    @Column(unique = true)
-    private String slug;
-
-    private Boolean convocatoria;
+    @ManyToOne
+    @JoinColumn(name = "id_tipo_programa")
+    private TipoPrograma idTipoPrograma;
 
     @Enumerated(EnumType.STRING)
     private Modalidad modalidad;
+
+    @Column(name = "lineas_investigacion")
+    private String lineasInvestigacion;
 }
