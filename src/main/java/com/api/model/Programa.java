@@ -37,13 +37,13 @@ public class Programa {
 
     private Boolean convocatoria;
     
-    @Column(name = "objetivo_general")
+    @Column(name = "objetivo_general", columnDefinition = "TEXT")
     private String objetivoGeneral;
 
-    @Column(name = "objetivos_especificos")
+    @Column(name = "objetivos_especificos", columnDefinition = "TEXT")
     private String objetivosEspecificos;
 
-    @Column(name = "perfil_posgraduado")
+    @Column(name = "perfil_posgraduado", columnDefinition = "TEXT")
     private String perfilPosgraduado;
 
     @ManyToOne
@@ -57,6 +57,6 @@ public class Programa {
     @Enumerated(EnumType.STRING)
     private Modalidad modalidad;
 
-    @Column(name = "lineas_investigacion")
+    @Column(name = "lineas_investigacion", columnDefinition = "TEXT")
     private String lineasInvestigacion;
 }
