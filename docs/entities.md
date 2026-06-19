@@ -64,6 +64,11 @@ Curso        (1) ────< (*) ProgramaCurso
 | `slug` | `String` (unique) | Identificador único para URL (se genera automáticamente) |
 | `convocatoria` | `Boolean` | Indica si el programa tiene convocatoria abierta |
 | `modalidad` | `Modalidad` (enum) | `PRESENCIAL`, `SEMIPRESENCIAL` o `VIRTUAL` |
+| `imagen` | `String` | URL de la imagen del programa |
+| `objetivoGeneral` | `Text` | Objetivo general del programa |
+| `objetivosEspecificos` | `Text` | Objetivos específicos del programa |
+| `perfilPosgraduado` | `Text` | Perfil del posgraduado |
+| `lineasInvestigacion` | `Text` | Líneas de investigación |
 
 **Slug:** Se genera automáticamente desde el `nombre` al crear. Es **único**.
 

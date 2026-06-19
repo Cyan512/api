@@ -78,7 +78,9 @@ class ProgramaServiceImplTest {
     void create_success() {
         var tipoPrograma = TipoPrograma.builder().id(1L).build();
         var facultad = Facultad.builder().id(1L).build();
-        var request = new ProgramaRequest(1L, "Ingeniería", 1L, true, Modalidad.PRESENCIAL);
+        var request = new ProgramaRequest("Ingeniería", true, null, "Objetivo General",
+                "Objetivos Específicos", "Perfil Posgraduado", 1L, 1L, Modalidad.PRESENCIAL,
+                "Líneas de Investigación");
         var saved = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
 
         when(tipoProgramaRepository.findById(1L)).thenReturn(Optional.of(tipoPrograma));
@@ -94,7 +96,9 @@ class ProgramaServiceImplTest {
 
     @Test
     void create_throwsNotFound_whenTipoProgramaNotExists() {
-        var request = new ProgramaRequest(99L, "Ingeniería", 1L, true, Modalidad.PRESENCIAL);
+        var request = new ProgramaRequest("Ingeniería", true, null, "Objetivo General",
+                "Objetivos Específicos", "Perfil Posgraduado", 1L, 99L, Modalidad.PRESENCIAL,
+                "Líneas de Investigación");
         when(tipoProgramaRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(ResponseStatusException.class,
@@ -104,7 +108,9 @@ class ProgramaServiceImplTest {
     @Test
     void create_throwsNotFound_whenFacultadNotExists() {
         var tipoPrograma = TipoPrograma.builder().id(1L).build();
-        var request = new ProgramaRequest(1L, "Ingeniería", 99L, true, Modalidad.PRESENCIAL);
+        var request = new ProgramaRequest("Ingeniería", true, null, "Objetivo General",
+                "Objetivos Específicos", "Perfil Posgraduado", 99L, 1L, Modalidad.PRESENCIAL,
+                "Líneas de Investigación");
         when(tipoProgramaRepository.findById(1L)).thenReturn(Optional.of(tipoPrograma));
         when(facultadRepository.findById(99L)).thenReturn(Optional.empty());
 
@@ -116,7 +122,9 @@ class ProgramaServiceImplTest {
     void create_throwsConflict_whenSlugExists() {
         var tipoPrograma = TipoPrograma.builder().id(1L).build();
         var facultad = Facultad.builder().id(1L).build();
-        var request = new ProgramaRequest(1L, "Ingeniería", 1L, true, Modalidad.PRESENCIAL);
+        var request = new ProgramaRequest("Ingeniería", true, null, "Objetivo General",
+                "Objetivos Específicos", "Perfil Posgraduado", 1L, 1L, Modalidad.PRESENCIAL,
+                "Líneas de Investigación");
         when(tipoProgramaRepository.findById(1L)).thenReturn(Optional.of(tipoPrograma));
         when(facultadRepository.findById(1L)).thenReturn(Optional.of(facultad));
         when(programaRepository.existsBySlug("ingenieria")).thenReturn(true);
@@ -141,5 +149,122 @@ class ProgramaServiceImplTest {
 
         assertThrows(ResponseStatusException.class,
                 () -> programaService.getProgramaBySlug("inventado"));
+    }
+
+    @Test
+    void update_success() {
+        var existing = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
+        var tipoPrograma = TipoPrograma.builder().id(1L).build();
+        var facultad = Facultad.builder().id(1L).build();
+        var request = new ProgramaRequest("Ingeniería", false, null, "Nuevo Objetivo General",
+                "Nuevos Objetivos Específicos", "Nuevo Perfil Posgraduado", 1L, 1L, Modalidad.VIRTUAL,
+                "Nuevas Líneas de Investigación");
+        var updated = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
+
+        when(programaRepository.findBySlug("ingenieria")).thenReturn(Optional.of(existing));
+        when(tipoProgramaRepository.findById(1L)).thenReturn(Optional.of(tipoPrograma));
+        when(facultadRepository.findById(1L)).thenReturn(Optional.of(facultad));
+        when(programaRepository.save(any())).thenReturn(updated);
+
+        var result = programaService.updatePrograma("ingenieria", request);
+
+        assertThat(result.getSlug()).isEqualTo("ingenieria");
+        verify(programaRepository).save(any());
+    }
+
+    @Test
+    void update_success_slugChanges() {
+        var existing = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
+        var tipoPrograma = TipoPrograma.builder().id(1L).build();
+        var facultad = Facultad.builder().id(1L).build();
+        var request = new ProgramaRequest("Maestría en Sistemas", false, null, "Nuevo Objetivo General",
+                "Nuevos Objetivos Específicos", "Nuevo Perfil Posgraduado", 1L, 1L, Modalidad.VIRTUAL,
+                "Nuevas Líneas de Investigación");
+        var updated = Programa.builder().id(1L).nombre("Maestría en Sistemas").slug("maestria-en-sistemas").build();
+
+        when(programaRepository.findBySlug("ingenieria")).thenReturn(Optional.of(existing));
+        when(tipoProgramaRepository.findById(1L)).thenReturn(Optional.of(tipoPrograma));
+        when(facultadRepository.findById(1L)).thenReturn(Optional.of(facultad));
+        when(programaRepository.existsBySlug("maestria-en-sistemas")).thenReturn(false);
+        when(programaRepository.save(any())).thenReturn(updated);
+
+        var result = programaService.updatePrograma("ingenieria", request);
+
+        assertThat(result.getSlug()).isEqualTo("maestria-en-sistemas");
+        verify(programaRepository).save(any());
+    }
+
+    @Test
+    void update_throwsNotFound_whenProgramaNotExists() {
+        var request = new ProgramaRequest("Ingeniería", true, null, "Objetivo General",
+                "Objetivos Específicos", "Perfil Posgraduado", 1L, 1L, Modalidad.PRESENCIAL,
+                "Líneas de Investigación");
+        when(programaRepository.findBySlug("inventado")).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class,
+                () -> programaService.updatePrograma("inventado", request));
+    }
+
+    @Test
+    void update_throwsNotFound_whenTipoProgramaNotExists() {
+        var existing = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
+        var request = new ProgramaRequest("Ingeniería", true, null, "Objetivo General",
+                "Objetivos Específicos", "Perfil Posgraduado", 1L, 99L, Modalidad.PRESENCIAL,
+                "Líneas de Investigación");
+        when(programaRepository.findBySlug("ingenieria")).thenReturn(Optional.of(existing));
+        when(tipoProgramaRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class,
+                () -> programaService.updatePrograma("ingenieria", request));
+    }
+
+    @Test
+    void update_throwsNotFound_whenFacultadNotExists() {
+        var existing = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
+        var tipoPrograma = TipoPrograma.builder().id(1L).build();
+        var request = new ProgramaRequest("Ingeniería", true, null, "Objetivo General",
+                "Objetivos Específicos", "Perfil Posgraduado", 99L, 1L, Modalidad.PRESENCIAL,
+                "Líneas de Investigación");
+        when(programaRepository.findBySlug("ingenieria")).thenReturn(Optional.of(existing));
+        when(tipoProgramaRepository.findById(1L)).thenReturn(Optional.of(tipoPrograma));
+        when(facultadRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class,
+                () -> programaService.updatePrograma("ingenieria", request));
+    }
+
+    @Test
+    void update_throwsConflict_whenSlugExists() {
+        var existing = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
+        var tipoPrograma = TipoPrograma.builder().id(1L).build();
+        var facultad = Facultad.builder().id(1L).build();
+        var request = new ProgramaRequest("Maestría en Sistemas", true, null, "Objetivo General",
+                "Objetivos Específicos", "Perfil Posgraduado", 1L, 1L, Modalidad.PRESENCIAL,
+                "Líneas de Investigación");
+        when(programaRepository.findBySlug("ingenieria")).thenReturn(Optional.of(existing));
+        when(tipoProgramaRepository.findById(1L)).thenReturn(Optional.of(tipoPrograma));
+        when(facultadRepository.findById(1L)).thenReturn(Optional.of(facultad));
+        when(programaRepository.existsBySlug("maestria-en-sistemas")).thenReturn(true);
+
+        assertThrows(ResponseStatusException.class,
+                () -> programaService.updatePrograma("ingenieria", request));
+    }
+
+    @Test
+    void delete_success() {
+        var programa = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
+        when(programaRepository.findBySlug("ingenieria")).thenReturn(Optional.of(programa));
+
+        programaService.deletePrograma("ingenieria");
+
+        verify(programaRepository).delete(programa);
+    }
+
+    @Test
+    void delete_throwsNotFound_whenProgramaNotExists() {
+        when(programaRepository.findBySlug("inventado")).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class,
+                () -> programaService.deletePrograma("inventado"));
     }
 }

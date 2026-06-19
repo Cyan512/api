@@ -54,7 +54,12 @@ GET /api/v1/programas?tipoSlug=pregrado&q=inge&idFacultad=1
       },
       "slug": "ingenieria-de-sistemas",
       "convocatoria": true,
-      "modalidad": "PRESENCIAL"
+      "modalidad": "PRESENCIAL",
+      "imagen": "https://ejemplo.com/imagen.jpg",
+      "objetivoGeneral": "Formar profesionales en ingeniería de sistemas",
+      "objetivosEspecificos": "Desarrollar competencias en desarrollo de software",
+      "perfilPosgraduado": "Profesional capacitado para liderar proyectos tecnológicos",
+      "lineasInvestigacion": "Ingeniería de software, Inteligencia artificial"
     }
   ],
   "timestamp": 1718400000000
@@ -94,7 +99,12 @@ Obtiene un programa específico por su slug.
     },
     "slug": "ingenieria-de-sistemas",
     "convocatoria": true,
-    "modalidad": "PRESENCIAL"
+    "modalidad": "PRESENCIAL",
+    "imagen": "https://ejemplo.com/imagen.jpg",
+    "objetivoGeneral": "Formar profesionales en ingeniería de sistemas",
+    "objetivosEspecificos": "Desarrollar competencias en desarrollo de software",
+    "perfilPosgraduado": "Profesional capacitado para liderar proyectos tecnológicos",
+    "lineasInvestigacion": "Ingeniería de software, Inteligencia artificial"
   },
   "timestamp": 1718400000000
 }
@@ -115,11 +125,16 @@ Crea un nuevo programa.
 **Body:**
 ```json
 {
-  "idTipoPrograma": 1,
   "nombre": "Ingeniería de Sistemas",
-  "idFacultad": 1,
   "convocatoria": true,
-  "modalidad": "PRESENCIAL"
+  "imagen": "https://ejemplo.com/imagen.jpg",
+  "objetivoGeneral": "Formar profesionales en ingeniería de sistemas",
+  "objetivosEspecificos": "Desarrollar competencias en desarrollo de software",
+  "perfilPosgraduado": "Profesional capacitado para liderar proyectos tecnológicos",
+  "idFacultad": 1,
+  "idTipoPrograma": 1,
+  "modalidad": "PRESENCIAL",
+  "lineasInvestigacion": "Ingeniería de software, Inteligencia artificial"
 }
 ```
 
@@ -127,11 +142,16 @@ Crea un nuevo programa.
 
 | Campo | Tipo | Obligatorio | Descripción |
 |-------|------|-------------|-------------|
-| `idTipoPrograma` | `number` | ✅ | ID del tipo de programa |
 | `nombre` | `string` | ✅ | Nombre del programa |
-| `idFacultad` | `number` | ✅ | ID de la facultad |
 | `convocatoria` | `boolean` | ❌ | Indica si tiene convocatoria abierta |
+| `imagen` | `string` | ❌ | URL de la imagen del programa |
+| `objetivoGeneral` | `string` | ✅ | Objetivo general del programa |
+| `objetivosEspecificos` | `string` | ✅ | Objetivos específicos del programa |
+| `perfilPosgraduado` | `string` | ✅ | Perfil del posgraduado |
+| `idFacultad` | `number` | ✅ | ID de la facultad |
+| `idTipoPrograma` | `number` | ✅ | ID del tipo de programa |
 | `modalidad` | `string` | ✅ | `PRESENCIAL`, `SEMIPRESENCIAL` o `VIRTUAL` |
+| `lineasInvestigacion` | `string` | ✅ | Líneas de investigación |
 
 **Nota:** El campo `slug` se genera automáticamente desde el `nombre`.
 
@@ -156,7 +176,12 @@ Crea un nuevo programa.
     },
     "slug": "ingenieria-de-sistemas",
     "convocatoria": true,
-    "modalidad": "PRESENCIAL"
+    "modalidad": "PRESENCIAL",
+    "imagen": "https://ejemplo.com/imagen.jpg",
+    "objetivoGeneral": "Formar profesionales en ingeniería de sistemas",
+    "objetivosEspecificos": "Desarrollar competencias en desarrollo de software",
+    "perfilPosgraduado": "Profesional capacitado para liderar proyectos tecnológicos",
+    "lineasInvestigacion": "Ingeniería de software, Inteligencia artificial"
   },
   "timestamp": 1718400000000
 }
@@ -171,11 +196,16 @@ Actualiza un programa existente.
 **Body:**
 ```json
 {
-  "idTipoPrograma": 1,
   "nombre": "Ingeniería de Sistemas Actualizada",
-  "idFacultad": 1,
   "convocatoria": false,
-  "modalidad": "VIRTUAL"
+  "imagen": "https://ejemplo.com/nueva-imagen.jpg",
+  "objetivoGeneral": "Formar profesionales actualizados en ingeniería",
+  "objetivosEspecificos": "Desarrollar competencias avanzadas",
+  "perfilPosgraduado": "Profesional con perfil actualizado",
+  "idFacultad": 1,
+  "idTipoPrograma": 1,
+  "modalidad": "VIRTUAL",
+  "lineasInvestigacion": "Nuevas líneas de investigación"
 }
 ```
 
@@ -200,7 +230,12 @@ Actualiza un programa existente.
     },
     "slug": "ingenieria-de-sistemas-actualizada",
     "convocatoria": false,
-    "modalidad": "VIRTUAL"
+    "modalidad": "VIRTUAL",
+    "imagen": "https://ejemplo.com/nueva-imagen.jpg",
+    "objetivoGeneral": "Formar profesionales actualizados en ingeniería",
+    "objetivosEspecificos": "Desarrollar competencias avanzadas",
+    "perfilPosgraduado": "Profesional con perfil actualizado",
+    "lineasInvestigacion": "Nuevas líneas de investigación"
   },
   "timestamp": 1718400000000
 }

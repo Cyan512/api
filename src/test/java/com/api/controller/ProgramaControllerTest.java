@@ -69,7 +69,7 @@ class ProgramaControllerTest {
 
         mockMvc.perform(post("/api/v1/programas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"idTipoPrograma\":1,\"nombre\":\"Ingeniería\",\"idFacultad\":1,\"convocatoria\":true,\"modalidad\":\"PRESENCIAL\"}"))
+                        .content("{\"nombre\":\"Ingeniería\",\"convocatoria\":true,\"imagen\":null,\"objetivoGeneral\":\"Formar profesionales\",\"objetivosEspecificos\":\"Desarrollar competencias\",\"perfilPosgraduado\":\"Perfil profesional\",\"idFacultad\":1,\"idTipoPrograma\":1,\"modalidad\":\"PRESENCIAL\",\"lineasInvestigacion\":\"Ingeniería de software\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.nombre").value("Ingeniería"));
@@ -79,7 +79,7 @@ class ProgramaControllerTest {
     void crear_returns400_whenNombreIsBlank() throws Exception {
         mockMvc.perform(post("/api/v1/programas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"idTipoPrograma\":1,\"nombre\":\"\",\"idFacultad\":1,\"modalidad\":\"PRESENCIAL\"}"))
+                        .content("{\"nombre\":\"\",\"idFacultad\":1,\"idTipoPrograma\":1,\"modalidad\":\"PRESENCIAL\",\"objetivoGeneral\":\"Obj\",\"objetivosEspecificos\":\"Esp\",\"perfilPosgraduado\":\"Perfil\",\"lineasInvestigacion\":\"Lineas\"}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Error de validación"));
@@ -122,7 +122,7 @@ class ProgramaControllerTest {
 
         mockMvc.perform(put("/api/v1/programas/ingenieria-sistemas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"idTipoPrograma\":1,\"nombre\":\"Ingeniería Actualizada\",\"idFacultad\":1,\"convocatoria\":true,\"modalidad\":\"VIRTUAL\"}"))
+                        .content("{\"nombre\":\"Ingeniería Actualizada\",\"convocatoria\":true,\"imagen\":null,\"objetivoGeneral\":\"Formar profesionales\",\"objetivosEspecificos\":\"Desarrollar competencias\",\"perfilPosgraduado\":\"Perfil profesional\",\"idFacultad\":1,\"idTipoPrograma\":1,\"modalidad\":\"VIRTUAL\",\"lineasInvestigacion\":\"Ingeniería de software\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.nombre").value("Ingeniería Actualizada"));
@@ -132,7 +132,7 @@ class ProgramaControllerTest {
     void actualizar_returns400_whenNombreIsBlank() throws Exception {
         mockMvc.perform(put("/api/v1/programas/ingenieria-sistemas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"idTipoPrograma\":1,\"nombre\":\"\",\"idFacultad\":1,\"modalidad\":\"VIRTUAL\"}"))
+                        .content("{\"nombre\":\"\",\"idFacultad\":1,\"idTipoPrograma\":1,\"modalidad\":\"VIRTUAL\",\"objetivoGeneral\":\"Obj\",\"objetivosEspecificos\":\"Esp\",\"perfilPosgraduado\":\"Perfil\",\"lineasInvestigacion\":\"Lineas\"}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Error de validación"));
