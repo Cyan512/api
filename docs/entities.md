@@ -101,4 +101,6 @@ Curso        (1) ────< (*) ProgramaCurso
 | `id` | `Long` | PK, auto-incrementable |
 | `idPrograma` | `Programa` (FK → `programa.id`) | Programa asociado |
 | `idCurso` | `Curso` (FK → `curso.id`) | Curso asociado |
-| `semestres` | `String` | Semestre(s) en que se dicta (ej: "I", "II", "III") |
+| `semestre` | `Integer` | Semestre en que se dicta (`null` si es electivo) |
+| `electivo` | `Boolean` | `true` si es electivo, `false` si es obligatorio |
+| `costoCuota` | `BigDecimal` | Costo de la cuota del curso |

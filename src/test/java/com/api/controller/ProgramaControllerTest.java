@@ -69,7 +69,7 @@ class ProgramaControllerTest {
 
         mockMvc.perform(post("/api/v1/programas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"nombre\":\"Ingeniería\",\"convocatoria\":true,\"imagen\":null,\"objetivoGeneral\":\"Formar profesionales\",\"objetivosEspecificos\":\"Desarrollar competencias\",\"perfilPosgraduado\":\"Perfil profesional\",\"idFacultad\":1,\"idTipoPrograma\":1,\"modalidad\":\"PRESENCIAL\",\"lineasInvestigacion\":\"Ingeniería de software\"}"))
+                        .content("{\"nombre\":\"Ingeniería\",\"convocatoria\":true,\"imagen\":null,\"objetivoGeneral\":\"Formar profesionales\",\"objetivosEspecificos\":\"Desarrollar competencias\",\"perfilPosgraduado\":\"Perfil profesional\",\"idFacultad\":1,\"idTipoPrograma\":1,\"modalidad\":\"PRESENCIAL\",\"lineasInvestigacion\":\"Ingeniería de software\",\"costoMatricula\":1000}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.nombre").value("Ingeniería"));
@@ -122,7 +122,7 @@ class ProgramaControllerTest {
 
         mockMvc.perform(put("/api/v1/programas/ingenieria-sistemas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"nombre\":\"Ingeniería Actualizada\",\"convocatoria\":true,\"imagen\":null,\"objetivoGeneral\":\"Formar profesionales\",\"objetivosEspecificos\":\"Desarrollar competencias\",\"perfilPosgraduado\":\"Perfil profesional\",\"idFacultad\":1,\"idTipoPrograma\":1,\"modalidad\":\"VIRTUAL\",\"lineasInvestigacion\":\"Ingeniería de software\"}"))
+                        .content("{\"nombre\":\"Ingeniería Actualizada\",\"convocatoria\":true,\"imagen\":null,\"objetivoGeneral\":\"Formar profesionales\",\"objetivosEspecificos\":\"Desarrollar competencias\",\"perfilPosgraduado\":\"Perfil profesional\",\"idFacultad\":1,\"idTipoPrograma\":1,\"modalidad\":\"VIRTUAL\",\"lineasInvestigacion\":\"Ingeniería de software\",\"costoMatricula\":1000}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.nombre").value("Ingeniería Actualizada"));

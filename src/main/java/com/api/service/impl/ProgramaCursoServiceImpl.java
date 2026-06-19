@@ -60,7 +60,9 @@ public class ProgramaCursoServiceImpl implements ProgramaCursoService {
         var programaCurso = ProgramaCurso.builder()
                 .idPrograma(programa)
                 .idCurso(curso)
-                .semestres(request.semestres())
+                .semestre(request.semestre())
+                .electivo(request.electivo() != null ? request.electivo() : false)
+                .costoCuota(request.costoCuota())
                 .build();
         return programaCursoRepository.save(programaCurso);
     }

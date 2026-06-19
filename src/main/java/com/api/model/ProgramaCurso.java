@@ -1,5 +1,8 @@
 package com.api.model;
 
+import java.math.BigDecimal;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +28,14 @@ public class ProgramaCurso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Integer semestre;
+
+    @Column(nullable = false)
+    private Boolean electivo = false;
+
+    @Column(name = "costo_cuota", precision = 10, scale = 2)
+    private BigDecimal costoCuota;
+
     @ManyToOne
     @JoinColumn(name = "id_programa")
     private Programa idPrograma;
@@ -33,5 +44,4 @@ public class ProgramaCurso {
     @JoinColumn(name = "id_curso")
     private Curso idCurso;
 
-    private String semestres;
 }

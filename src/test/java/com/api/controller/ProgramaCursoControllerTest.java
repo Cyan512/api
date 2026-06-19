@@ -48,46 +48,50 @@ class ProgramaCursoControllerTest {
 
     @Test
     void listar_returns200_withData() throws Exception {
-        var pc = ProgramaCurso.builder().id(1L).semestres("I").build();
+        var pc = ProgramaCurso.builder().id(1L).semestre(1).electivo(false).build();
         when(programaCursoService.getAllProgramaCursos()).thenReturn(List.of(pc));
 
         mockMvc.perform(get("/api/v1/programas-cursos"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data[0].semestres").value("I"));
+                .andExpect(jsonPath("$.data[0].semestre").value(1))
+                .andExpect(jsonPath("$.data[0].electivo").value(false));
     }
 
     @Test
     void listar_porProgramaId_returns200() throws Exception {
-        var pc = ProgramaCurso.builder().id(1L).semestres("I").build();
+        var pc = ProgramaCurso.builder().id(1L).semestre(1).electivo(false).build();
         when(programaCursoService.getProgramaCursosByProgramaId(1L)).thenReturn(List.of(pc));
 
         mockMvc.perform(get("/api/v1/programas-cursos?programaId=1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data[0].semestres").value("I"));
+                .andExpect(jsonPath("$.data[0].semestre").value(1))
+                .andExpect(jsonPath("$.data[0].electivo").value(false));
     }
 
     @Test
     void listar_porCursoId_returns200() throws Exception {
-        var pc = ProgramaCurso.builder().id(1L).semestres("I").build();
+        var pc = ProgramaCurso.builder().id(1L).semestre(1).electivo(false).build();
         when(programaCursoService.getProgramaCursosByCursoId(1L)).thenReturn(List.of(pc));
 
         mockMvc.perform(get("/api/v1/programas-cursos?cursoId=1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data[0].semestres").value("I"));
+                .andExpect(jsonPath("$.data[0].semestre").value(1))
+                .andExpect(jsonPath("$.data[0].electivo").value(false));
     }
 
     @Test
     void obtenerPorId_returns200() throws Exception {
-        var pc = ProgramaCurso.builder().id(1L).semestres("I").build();
+        var pc = ProgramaCurso.builder().id(1L).semestre(1).electivo(false).build();
         when(programaCursoService.getProgramaCursoById(1L)).thenReturn(pc);
 
         mockMvc.perform(get("/api/v1/programas-cursos/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.semestres").value("I"));
+                .andExpect(jsonPath("$.data.semestre").value(1))
+                .andExpect(jsonPath("$.data.electivo").value(false));
     }
 
     @Test
@@ -102,25 +106,16 @@ class ProgramaCursoControllerTest {
 
     @Test
     void crear_returns201() throws Exception {
-        var pc = ProgramaCurso.builder().id(1L).semestres("I").build();
+        var pc = ProgramaCurso.builder().id(1L).semestre(1).electivo(false).build();
         when(programaCursoService.createProgramaCurso(any())).thenReturn(pc);
 
         mockMvc.perform(post("/api/v1/programas-cursos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"idPrograma\":1,\"idCurso\":1,\"semestres\":\"I\"}"))
+                        .content("{\"idPrograma\":1,\"idCurso\":1,\"semestre\":1,\"electivo\":false,\"costoCuota\":500}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.semestres").value("I"));
-    }
-
-    @Test
-    void crear_returns400_whenSemestresIsBlank() throws Exception {
-        mockMvc.perform(post("/api/v1/programas-cursos")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"idPrograma\":1,\"idCurso\":1,\"semestres\":\"\"}"))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Error de validación"));
+                .andExpect(jsonPath("$.data.semestre").value(1))
+                .andExpect(jsonPath("$.data.electivo").value(false));
     }
 
     @Test

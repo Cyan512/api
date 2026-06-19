@@ -44,7 +44,8 @@ GET /api/v1/programas-cursos?cursoId=1
         "creditos": 4,
         "categoria": "OE"
       },
-      "semestres": "I"
+      "semestre": 1,
+      "electivo": false
     }
   ],
   "timestamp": 1718400000000
@@ -62,7 +63,9 @@ Crea una nueva asociación programa-curso.
 {
   "idPrograma": 1,
   "idCurso": 1,
-  "semestres": "I"
+  "costoCuota": 500,
+  "semestre": 1,
+  "electivo": false
 }
 ```
 
@@ -72,7 +75,9 @@ Crea una nueva asociación programa-curso.
 |-------|------|-------------|-------------|
 | `idPrograma` | `number` | ✅ | ID del programa |
 | `idCurso` | `number` | ✅ | ID del curso |
-| `semestres` | `string` | ✅ | Semestre(s) en que se dicta (ej: "I", "II", "III") |
+| `costoCuota` | `number` | ✅ | Costo de la cuota del curso |
+| `semestre` | `number` | ❌ | Semestre en que se dicta (omitir si es electivo) |
+| `electivo` | `boolean` | ❌ | `true` si es electivo, `false` si es obligatorio (por defecto `false`) |
 
 **Respuesta (201 Created):**
 ```json
@@ -83,7 +88,8 @@ Crea una nueva asociación programa-curso.
     "id": 1,
     "idPrograma": { ... },
     "idCurso": { ... },
-    "semestres": "I"
+    "semestre": 1,
+    "electivo": false
   },
   "timestamp": 1718400000000
 }
@@ -120,7 +126,8 @@ Obtiene una asociación programa-curso específica por su ID.
       "creditos": 4,
       "categoria": "OE"
     },
-    "semestres": "I"
+    "semestre": 1,
+    "electivo": false
   },
   "timestamp": 1718400000000
 }

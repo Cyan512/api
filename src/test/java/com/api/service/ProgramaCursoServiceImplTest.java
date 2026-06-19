@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +43,7 @@ class ProgramaCursoServiceImplTest {
 
     @Test
     void getAll_returnsList() {
-        var pc = ProgramaCurso.builder().id(1L).semestres("I").build();
+        var pc = ProgramaCurso.builder().id(1L).semestre(1).electivo(false).build();
         when(programaCursoRepository.findAll()).thenReturn(List.of(pc));
 
         var result = programaCursoService.getAllProgramaCursos();
@@ -63,8 +64,8 @@ class ProgramaCursoServiceImplTest {
     void create_success() {
         var programa = Programa.builder().id(1L).build();
         var curso = Curso.builder().id(1L).build();
-        var request = new ProgramaCursoRequest(1L, 1L, "I");
-        var saved = ProgramaCurso.builder().id(1L).idPrograma(programa).idCurso(curso).semestres("I").build();
+        var request = new ProgramaCursoRequest(1, true, BigDecimal.valueOf(500), 1L, 1L);
+        var saved = ProgramaCurso.builder().id(1L).idPrograma(programa).idCurso(curso).semestre(1).electivo(true).build();
 
         when(programaRepository.findById(1L)).thenReturn(Optional.of(programa));
         when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
@@ -72,13 +73,14 @@ class ProgramaCursoServiceImplTest {
 
         var result = programaCursoService.createProgramaCurso(request);
 
-        assertThat(result.getSemestres()).isEqualTo("I");
+        assertThat(result.getSemestre()).isEqualTo(1);
+        assertThat(result.getElectivo()).isTrue();
         verify(programaCursoRepository).save(any());
     }
 
     @Test
     void create_throwsNotFound_whenProgramaNotExists() {
-        var request = new ProgramaCursoRequest(99L, 1L, "I");
+        var request = new ProgramaCursoRequest(null, false, BigDecimal.valueOf(500), 99L, 1L);
         when(programaRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(ResponseStatusException.class,
@@ -88,7 +90,7 @@ class ProgramaCursoServiceImplTest {
     @Test
     void create_throwsNotFound_whenCursoNotExists() {
         var programa = Programa.builder().id(1L).build();
-        var request = new ProgramaCursoRequest(1L, 99L, "I");
+        var request = new ProgramaCursoRequest(1, false, BigDecimal.valueOf(500), 1L, 99L);
         when(programaRepository.findById(1L)).thenReturn(Optional.of(programa));
         when(cursoRepository.findById(99L)).thenReturn(Optional.empty());
 

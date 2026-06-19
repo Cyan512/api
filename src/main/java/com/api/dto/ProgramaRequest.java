@@ -1,30 +1,34 @@
 package com.api.dto;
 
+import java.math.BigDecimal;
+
 import com.api.model.Modalidad;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record ProgramaRequest(
-                @NotBlank(message = "El nombre es obligatorio") String nombre,
+        @NotBlank(message = "El nombre es obligatorio") String nombre,
 
-                Boolean convocatoria,
+        Boolean convocatoria,
 
-                String imagen,
+        String imagen,
 
-                @NotBlank(message = "El objetivo general es obligatorio") String objetivoGeneral,
+        @NotBlank(message = "El objetivo general es obligatorio") String objetivoGeneral,
 
-                @NotBlank(message = "El objetivos especificos es obligatorio") String objetivosEspecificos,
+        @NotBlank(message = "El objetivos especificos es obligatorio") String objetivosEspecificos,
 
-                @NotBlank(message = "El objetivo perfil posgraduado es obligatorio") String perfilPosgraduado,
+        @NotBlank(message = "El objetivo perfil posgraduado es obligatorio") String perfilPosgraduado,
 
-                @NotNull(message = "La facultad es obligatoria") Long idFacultad,
+        @NotNull(message = "La facultad es obligatoria") Long idFacultad,
 
-                @NotNull(message = "El tipo de programa es obligatorio") Long idTipoPrograma,
+        @NotNull(message = "El tipo de programa es obligatorio") Long idTipoPrograma,
 
-                @NotNull(message = "La modalidad es obligatoria") Modalidad modalidad,
+        @NotNull(message = "La modalidad es obligatoria") Modalidad modalidad,
 
-                @NotBlank(message = "Las lineas de investigacion es obligatorio") String lineasInvestigacion
+        @NotBlank(message = "Las lineas de investigacion es obligatorio") String lineasInvestigacion,
+
+        @NotNull(message = "El costo de matricula es obligatorio") BigDecimal costoMatricula
 
 ) {
 }

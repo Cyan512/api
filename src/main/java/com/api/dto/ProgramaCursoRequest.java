@@ -1,15 +1,19 @@
 package com.api.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import java.math.BigDecimal;
+
 import jakarta.validation.constraints.NotNull;
 
 public record ProgramaCursoRequest(
-    @NotNull(message = "El programa es obligatorio")
-    Long idPrograma,
+        Integer semestre,
 
-    @NotNull(message = "El curso es obligatorio")
-    Long idCurso,
+        Boolean electivo,
 
-    @NotBlank(message = "El semestre es obligatorio")
-    String semestres
-) {}
+        @NotNull(message = "El costo cuota es obligatorio") BigDecimal costoCuota,
+
+        @NotNull(message = "El programa es obligatorio") Long idPrograma,
+
+        @NotNull(message = "El curso es obligatorio") Long idCurso
+
+) {
+}

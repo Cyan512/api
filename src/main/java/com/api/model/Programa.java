@@ -1,5 +1,7 @@
 package com.api.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,7 +29,7 @@ public class Programa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String nombre;
 
     @Column(unique = true)
@@ -36,7 +38,7 @@ public class Programa {
     private String imagen;
 
     private Boolean convocatoria;
-    
+
     @Column(name = "objetivo_general", columnDefinition = "TEXT")
     private String objetivoGeneral;
 
@@ -59,4 +61,7 @@ public class Programa {
 
     @Column(name = "lineas_investigacion", columnDefinition = "TEXT")
     private String lineasInvestigacion;
+
+    @Column(name = "costo_matricula", precision = 10, scale = 2)
+    private BigDecimal costoMatricula;
 }
