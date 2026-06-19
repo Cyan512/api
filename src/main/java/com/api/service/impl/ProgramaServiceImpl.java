@@ -87,6 +87,7 @@ public class ProgramaServiceImpl implements ProgramaService {
                 .objetivoGeneral(request.objetivoGeneral())
                 .objetivosEspecificos(request.objetivosEspecificos())
                 .lineasInvestigacion(request.lineasInvestigacion())
+                .perfilPosgraduado(request.perfilPosgraduado())
                 .build();
         return programaRepository.save(programa);
     }
