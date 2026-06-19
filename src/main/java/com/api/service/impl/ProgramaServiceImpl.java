@@ -83,6 +83,10 @@ public class ProgramaServiceImpl implements ProgramaService {
                 .slug(slug)
                 .convocatoria(request.convocatoria())
                 .modalidad(request.modalidad())
+                .imagen(request.imagen())
+                .objetivoGeneral(request.objetivoGeneral())
+                .objetivosEspecificos(request.objetivosEspecificos())
+                .lineasInvestigacion(request.lineasInvestigacion())
                 .build();
         return programaRepository.save(programa);
     }

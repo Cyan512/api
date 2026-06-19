@@ -6,17 +6,25 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record ProgramaRequest(
-    @NotNull(message = "El tipo de programa es obligatorio")
-    Long idTipoPrograma,
+                @NotBlank(message = "El nombre es obligatorio") String nombre,
 
-    @NotBlank(message = "El nombre es obligatorio")
-    String nombre,
+                Boolean convocatoria,
 
-    @NotNull(message = "La facultad es obligatoria")
-    Long idFacultad,
+                String imagen,
 
-    Boolean convocatoria,
+                @NotBlank(message = "El objetivo general es obligatorio") String objetivoGeneral,
 
-    @NotNull(message = "La modalidad es obligatoria")
-    Modalidad modalidad
-) {}
+                @NotBlank(message = "El objetivos especificos es obligatorio") String objetivosEspecificos,
+
+                @NotBlank(message = "El objetivo perfil posgraduado es obligatorio") String perfilPosgraduado,
+
+                @NotNull(message = "La facultad es obligatoria") Long idFacultad,
+
+                @NotNull(message = "El tipo de programa es obligatorio") Long idTipoPrograma,
+
+                @NotNull(message = "La modalidad es obligatoria") Modalidad modalidad,
+
+                @NotBlank(message = "Las lineas de investigacion es obligatorio") String lineasInvestigacion
+
+) {
+}
