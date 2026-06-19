@@ -124,6 +124,11 @@ public class ProgramaServiceImpl implements ProgramaService {
         programa.setSlug(newSlug);
         programa.setConvocatoria(request.convocatoria());
         programa.setModalidad(request.modalidad());
+        programa.setImagen(request.imagen());
+        programa.setObjetivoGeneral(request.objetivoGeneral());
+        programa.setObjetivosEspecificos(request.objetivosEspecificos());
+        programa.setLineasInvestigacion(request.lineasInvestigacion());
+        programa.setPerfilPosgraduado(request.perfilPosgraduado());
         return programaRepository.save(programa);
     }
 
