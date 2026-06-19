@@ -34,7 +34,7 @@ public class Comunicado {
     @Column(columnDefinition = "TEXT")
     private String resumen;
 
-    @Column(name = "contenido", columnDefinition = "LONGTEXT")
+    @Column(name = "contenido", columnDefinition = "TEXT")
     private String contenido;
 
     private String imagen;

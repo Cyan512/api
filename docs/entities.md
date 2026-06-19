@@ -84,7 +84,7 @@ Curso        (1) ────< (*) ProgramaCurso
 | `titulo` | `String` | Título del comunicado |
 | `slug` | `String` (unique) | Identificador único para URL (se genera automáticamente) |
 | `resumen` | `Text` | Resumen del comunicado |
-| `contenido` | `LongText` | Contenido completo del comunicado |
+| `contenido` | `Text` | Contenido completo del comunicado |
 | `imagen` | `String` | URL de la imagen del comunicado |
 | `fechaPublicacion` | `LocalDateTime` | Fecha y hora de publicación |
 
