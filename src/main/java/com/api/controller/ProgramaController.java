@@ -17,7 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.api.dto.ApiResponse;
 import com.api.dto.ProgramaRequest;
-import com.api.model.Modalidad;
+import com.api.enums.Modalidad;
 import com.api.model.Programa;
 import com.api.service.ProgramaService;
 

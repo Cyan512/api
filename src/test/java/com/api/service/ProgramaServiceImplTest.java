@@ -19,8 +19,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.api.dto.ProgramaRequest;
+import com.api.enums.Modalidad;
 import com.api.model.Facultad;
-import com.api.model.Modalidad;
 import com.api.model.Programa;
 import com.api.model.TipoPrograma;
 import com.api.repository.FacultadRepository;
@@ -79,9 +79,9 @@ class ProgramaServiceImplTest {
     void create_success() {
         var tipoPrograma = TipoPrograma.builder().id(1L).build();
         var facultad = Facultad.builder().id(1L).build();
-        var request = new ProgramaRequest("Ingeniería", true, null, "Objetivo General",
-                "Objetivos Específicos", "Perfil Posgraduado", 1L, 1L, Modalidad.PRESENCIAL,
-                "Líneas de Investigación", BigDecimal.valueOf(1000));
+        var request = new ProgramaRequest("Ingeniería", true, "https://img.jpg", "Objetivo General",
+                new String[]{"Objetivos Específicos"}, "Perfil Posgraduado", 1L, 1L, Modalidad.PRESENCIAL,
+                new String[]{"Líneas de Investigación"}, BigDecimal.valueOf(1000));
         var saved = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
 
         when(tipoProgramaRepository.findById(1L)).thenReturn(Optional.of(tipoPrograma));
@@ -97,9 +97,9 @@ class ProgramaServiceImplTest {
 
     @Test
     void create_throwsNotFound_whenTipoProgramaNotExists() {
-        var request = new ProgramaRequest("Ingeniería", true, null, "Objetivo General",
-                "Objetivos Específicos", "Perfil Posgraduado", 1L, 99L, Modalidad.PRESENCIAL,
-                "Líneas de Investigación", BigDecimal.valueOf(1000));
+        var request = new ProgramaRequest("Ingeniería", true, "https://img.jpg", "Objetivo General",
+                new String[]{"Objetivos Específicos"}, "Perfil Posgraduado", 1L, 99L, Modalidad.PRESENCIAL,
+                new String[]{"Líneas de Investigación"}, BigDecimal.valueOf(1000));
         when(tipoProgramaRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(ResponseStatusException.class,
@@ -109,9 +109,9 @@ class ProgramaServiceImplTest {
     @Test
     void create_throwsNotFound_whenFacultadNotExists() {
         var tipoPrograma = TipoPrograma.builder().id(1L).build();
-        var request = new ProgramaRequest("Ingeniería", true, null, "Objetivo General",
-                "Objetivos Específicos", "Perfil Posgraduado", 99L, 1L, Modalidad.PRESENCIAL,
-                "Líneas de Investigación", BigDecimal.valueOf(1000));
+        var request = new ProgramaRequest("Ingeniería", true, "https://img.jpg", "Objetivo General",
+                new String[]{"Objetivos Específicos"}, "Perfil Posgraduado", 99L, 1L, Modalidad.PRESENCIAL,
+                new String[]{"Líneas de Investigación"}, BigDecimal.valueOf(1000));
         when(tipoProgramaRepository.findById(1L)).thenReturn(Optional.of(tipoPrograma));
         when(facultadRepository.findById(99L)).thenReturn(Optional.empty());
 
@@ -123,9 +123,9 @@ class ProgramaServiceImplTest {
     void create_throwsConflict_whenSlugExists() {
         var tipoPrograma = TipoPrograma.builder().id(1L).build();
         var facultad = Facultad.builder().id(1L).build();
-        var request = new ProgramaRequest("Ingeniería", true, null, "Objetivo General",
-                "Objetivos Específicos", "Perfil Posgraduado", 1L, 1L, Modalidad.PRESENCIAL,
-                "Líneas de Investigación", BigDecimal.valueOf(1000));
+        var request = new ProgramaRequest("Ingeniería", true, "https://img.jpg", "Objetivo General",
+                new String[]{"Objetivos Específicos"}, "Perfil Posgraduado", 1L, 1L, Modalidad.PRESENCIAL,
+                new String[]{"Líneas de Investigación"}, BigDecimal.valueOf(1000));
         when(tipoProgramaRepository.findById(1L)).thenReturn(Optional.of(tipoPrograma));
         when(facultadRepository.findById(1L)).thenReturn(Optional.of(facultad));
         when(programaRepository.existsBySlug("ingenieria")).thenReturn(true);
@@ -157,9 +157,9 @@ class ProgramaServiceImplTest {
         var existing = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
         var tipoPrograma = TipoPrograma.builder().id(1L).build();
         var facultad = Facultad.builder().id(1L).build();
-        var request = new ProgramaRequest("Ingeniería", false, null, "Nuevo Objetivo General",
-                "Nuevos Objetivos Específicos", "Nuevo Perfil Posgraduado", 1L, 1L, Modalidad.VIRTUAL,
-                "Nuevas Líneas de Investigación", BigDecimal.valueOf(1000));
+        var request = new ProgramaRequest("Ingeniería", false, "https://img.jpg", "Nuevo Objetivo General",
+                new String[]{"Nuevos Objetivos Específicos"}, "Nuevo Perfil Posgraduado", 1L, 1L, Modalidad.VIRTUAL,
+                new String[]{"Nuevas Líneas de Investigación"}, BigDecimal.valueOf(1000));
         var updated = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
 
         when(programaRepository.findBySlug("ingenieria")).thenReturn(Optional.of(existing));
@@ -178,9 +178,9 @@ class ProgramaServiceImplTest {
         var existing = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
         var tipoPrograma = TipoPrograma.builder().id(1L).build();
         var facultad = Facultad.builder().id(1L).build();
-        var request = new ProgramaRequest("Maestría en Sistemas", false, null, "Nuevo Objetivo General",
-                "Nuevos Objetivos Específicos", "Nuevo Perfil Posgraduado", 1L, 1L, Modalidad.VIRTUAL,
-                "Nuevas Líneas de Investigación", BigDecimal.valueOf(1000));
+        var request = new ProgramaRequest("Maestría en Sistemas", false, "https://img.jpg", "Nuevo Objetivo General",
+                new String[]{"Nuevos Objetivos Específicos"}, "Nuevo Perfil Posgraduado", 1L, 1L, Modalidad.VIRTUAL,
+                new String[]{"Nuevas Líneas de Investigación"}, BigDecimal.valueOf(1000));
         var updated = Programa.builder().id(1L).nombre("Maestría en Sistemas").slug("maestria-en-sistemas").build();
 
         when(programaRepository.findBySlug("ingenieria")).thenReturn(Optional.of(existing));
@@ -197,9 +197,9 @@ class ProgramaServiceImplTest {
 
     @Test
     void update_throwsNotFound_whenProgramaNotExists() {
-        var request = new ProgramaRequest("Ingeniería", true, null, "Objetivo General",
-                "Objetivos Específicos", "Perfil Posgraduado", 1L, 1L, Modalidad.PRESENCIAL,
-                "Líneas de Investigación", BigDecimal.valueOf(1000));
+        var request = new ProgramaRequest("Ingeniería", true, "https://img.jpg", "Objetivo General",
+                new String[]{"Objetivos Específicos"}, "Perfil Posgraduado", 1L, 1L, Modalidad.PRESENCIAL,
+                new String[]{"Líneas de Investigación"}, BigDecimal.valueOf(1000));
         when(programaRepository.findBySlug("inventado")).thenReturn(Optional.empty());
 
         assertThrows(ResponseStatusException.class,
@@ -209,9 +209,9 @@ class ProgramaServiceImplTest {
     @Test
     void update_throwsNotFound_whenTipoProgramaNotExists() {
         var existing = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
-        var request = new ProgramaRequest("Ingeniería", true, null, "Objetivo General",
-                "Objetivos Específicos", "Perfil Posgraduado", 1L, 99L, Modalidad.PRESENCIAL,
-                "Líneas de Investigación", BigDecimal.valueOf(1000));
+        var request = new ProgramaRequest("Ingeniería", true, "https://img.jpg", "Objetivo General",
+                new String[]{"Objetivos Específicos"}, "Perfil Posgraduado", 1L, 99L, Modalidad.PRESENCIAL,
+                new String[]{"Líneas de Investigación"}, BigDecimal.valueOf(1000));
         when(programaRepository.findBySlug("ingenieria")).thenReturn(Optional.of(existing));
         when(tipoProgramaRepository.findById(99L)).thenReturn(Optional.empty());
 
@@ -223,9 +223,9 @@ class ProgramaServiceImplTest {
     void update_throwsNotFound_whenFacultadNotExists() {
         var existing = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
         var tipoPrograma = TipoPrograma.builder().id(1L).build();
-        var request = new ProgramaRequest("Ingeniería", true, null, "Objetivo General",
-                "Objetivos Específicos", "Perfil Posgraduado", 99L, 1L, Modalidad.PRESENCIAL,
-                "Líneas de Investigación", BigDecimal.valueOf(1000));
+        var request = new ProgramaRequest("Ingeniería", true, "https://img.jpg", "Objetivo General",
+                new String[]{"Objetivos Específicos"}, "Perfil Posgraduado", 99L, 1L, Modalidad.PRESENCIAL,
+                new String[]{"Líneas de Investigación"}, BigDecimal.valueOf(1000));
         when(programaRepository.findBySlug("ingenieria")).thenReturn(Optional.of(existing));
         when(tipoProgramaRepository.findById(1L)).thenReturn(Optional.of(tipoPrograma));
         when(facultadRepository.findById(99L)).thenReturn(Optional.empty());
@@ -239,9 +239,9 @@ class ProgramaServiceImplTest {
         var existing = Programa.builder().id(1L).nombre("Ingeniería").slug("ingenieria").build();
         var tipoPrograma = TipoPrograma.builder().id(1L).build();
         var facultad = Facultad.builder().id(1L).build();
-        var request = new ProgramaRequest("Maestría en Sistemas", true, null, "Objetivo General",
-                "Objetivos Específicos", "Perfil Posgraduado", 1L, 1L, Modalidad.PRESENCIAL,
-                "Líneas de Investigación", BigDecimal.valueOf(1000));
+        var request = new ProgramaRequest("Maestría en Sistemas", true, "https://img.jpg", "Objetivo General",
+                new String[]{"Objetivos Específicos"}, "Perfil Posgraduado", 1L, 1L, Modalidad.PRESENCIAL,
+                new String[]{"Líneas de Investigación"}, BigDecimal.valueOf(1000));
         when(programaRepository.findBySlug("ingenieria")).thenReturn(Optional.of(existing));
         when(tipoProgramaRepository.findById(1L)).thenReturn(Optional.of(tipoPrograma));
         when(facultadRepository.findById(1L)).thenReturn(Optional.of(facultad));

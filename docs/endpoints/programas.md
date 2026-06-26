@@ -8,29 +8,15 @@
 
 Lista programas con filtros opcionales.
 
-### Parámetros (todos opcionales)
+### Parametros (todos opcionales)
 
-| Parámetro | Tipo | Ejemplo | Descripción |
+| Parametro | Tipo | Ejemplo | Descripcion |
 |-----------|------|---------|-------------|
 | `tipoSlug` | `string` | `maestria` | Filtra por tipo de programa (slug) |
-| `q` | `string` | `sistemas` | Búsqueda textual por nombre |
+| `q` | `string` | `sistemas` | Busqueda textual por nombre |
 | `modalidad` | `string` | `VIRTUAL` | Filtra por modalidad (`PRESENCIAL`, `SEMIPRESENCIAL`, `VIRTUAL`) |
 | `idFacultad` | `number` | `1` | Filtra por ID de facultad |
 | `convocatoria` | `boolean` | `true` | Filtra por convocatoria abierta/cerrada |
-
-**Nota:** El orden de los parámetros no importa.
-
-### Ejemplos de uso
-
-```
-GET /api/v1/programas
-GET /api/v1/programas?tipoSlug=maestria
-GET /api/v1/programas?tipoSlug=maestria&q=sistemas
-GET /api/v1/programas?modalidad=VIRTUAL
-GET /api/v1/programas?convocatoria=true
-GET /api/v1/programas?tipoSlug=maestria&modalidad=VIRTUAL&convocatoria=true
-GET /api/v1/programas?tipoSlug=pregrado&q=inge&idFacultad=1
-```
 
 **Respuesta:**
 ```json
@@ -40,79 +26,50 @@ GET /api/v1/programas?tipoSlug=pregrado&q=inge&idFacultad=1
   "data": [
     {
       "id": 1,
-      "idTipoPrograma": {
+      "tipoPrograma": {
         "id": 1,
         "nombre": "Pregrado",
-        "imagenCard": null,
-        "imagenBg": null,
+        "cardImageUrl": "pregrado-card.jpg",
+        "heroBgUrl": "pregrado-bg.jpg",
         "slug": "pregrado"
       },
-      "nombre": "Ingeniería de Sistemas",
-      "idFacultad": {
+      "nombre": "Ingenieria de Sistemas",
+      "facultad": {
         "id": 1,
-        "nombre": "Ingeniería"
+        "nombre": "Ingenieria"
       },
       "slug": "ingenieria-de-sistemas",
-      "convocatoria": true,
+      "enConvocatoria": true,
       "modalidad": "PRESENCIAL",
-      "imagen": "https://ejemplo.com/imagen.jpg",
-      "objetivoGeneral": "Formar profesionales en ingeniería de sistemas",
-      "objetivosEspecificos": "Desarrollar competencias en desarrollo de software",
-      "perfilPosgraduado": "Profesional capacitado para liderar proyectos tecnológicos",
-      "lineasInvestigacion": "Ingeniería de software, Inteligencia artificial"
+      "imageUrl": "https://ejemplo.com/imagen.jpg",
+      "objetivoGeneral": "Formar profesionales en ingenieria de sistemas",
+      "objetivosEspecificos": [
+        "Desarrollar competencias en desarrollo de software",
+        "Fomentar la investigacion aplicada"
+      ],
+      "perfilPosgraduado": "Profesional capacitado para liderar proyectos tecnologicos",
+      "lineasInvestigacion": [
+        "Ingenieria de software",
+        "Inteligencia artificial"
+      ],
+      "costoMatricula": 500.00
     }
   ],
   "timestamp": 1718400000000
 }
 ```
 
+> **Nota:** `objetivosEspecificos` y `lineasInvestigacion` ahora son arrays de strings (`text[]` en BD).
+
 ---
 
 ## GET /api/v1/programas/{slug}
 
-Obtiene un programa específico por su slug.
-
-**Parámetros:**
-
-| Parámetro | Tipo | Ejemplo | Descripción |
-|-----------|------|---------|-------------|
-| `slug` | `string` | `ingenieria-de-sistemas` | Slug único del programa |
-
-**Respuesta:**
-```json
-{
-  "success": true,
-  "message": "Programa encontrado exitosamente",
-  "data": {
-    "id": 1,
-    "idTipoPrograma": {
-      "id": 1,
-      "nombre": "Pregrado",
-      "imagenCard": null,
-      "imagenBg": null,
-      "slug": "pregrado"
-    },
-    "nombre": "Ingeniería de Sistemas",
-    "idFacultad": {
-      "id": 1,
-      "nombre": "Ingeniería"
-    },
-    "slug": "ingenieria-de-sistemas",
-    "convocatoria": true,
-    "modalidad": "PRESENCIAL",
-    "imagen": "https://ejemplo.com/imagen.jpg",
-    "objetivoGeneral": "Formar profesionales en ingeniería de sistemas",
-    "objetivosEspecificos": "Desarrollar competencias en desarrollo de software",
-    "perfilPosgraduado": "Profesional capacitado para liderar proyectos tecnológicos",
-    "lineasInvestigacion": "Ingeniería de software, Inteligencia artificial"
-  },
-  "timestamp": 1718400000000
-}
-```
+Obtiene un programa especifico por su slug.
 
 **Posibles errores:**
 
-| Código | Causa |
+| Codigo | Causa |
 |--------|-------|
 | `404` | No existe un programa con ese slug |
 
@@ -125,128 +82,58 @@ Crea un nuevo programa.
 **Body:**
 ```json
 {
-  "nombre": "Ingeniería de Sistemas",
-  "convocatoria": true,
-  "imagen": "https://ejemplo.com/imagen.jpg",
-  "objetivoGeneral": "Formar profesionales en ingeniería de sistemas",
-  "objetivosEspecificos": "Desarrollar competencias en desarrollo de software",
-  "perfilPosgraduado": "Profesional capacitado para liderar proyectos tecnológicos",
-  "idFacultad": 1,
-  "idTipoPrograma": 1,
+  "nombre": "Ingenieria de Sistemas",
+  "enConvocatoria": true,
+  "imageUrl": "https://ejemplo.com/imagen.jpg",
+  "objetivoGeneral": "Formar profesionales en ingenieria de sistemas",
+  "objetivosEspecificos": [
+    "Desarrollar competencias en desarrollo de software",
+    "Fomentar la investigacion aplicada"
+  ],
+  "perfilPosgraduado": "Profesional capacitado para liderar proyectos tecnologicos",
+  "facultadId": 1,
+  "tipoProgramaId": 1,
   "modalidad": "PRESENCIAL",
-  "lineasInvestigacion": "Ingeniería de software, Inteligencia artificial"
+  "lineasInvestigacion": [
+    "Ingenieria de software",
+    "Inteligencia artificial"
+  ],
+  "costoMatricula": 500.00
 }
 ```
 
 **Campos:**
 
-| Campo | Tipo | Obligatorio | Descripción |
+| Campo | Tipo | Obligatorio | Descripcion |
 |-------|------|-------------|-------------|
-| `nombre` | `string` | ✅ | Nombre del programa |
-| `convocatoria` | `boolean` | ❌ | Indica si tiene convocatoria abierta |
-| `imagen` | `string` | ❌ | URL de la imagen del programa |
-| `objetivoGeneral` | `string` | ✅ | Objetivo general del programa |
-| `objetivosEspecificos` | `string` | ✅ | Objetivos específicos del programa |
-| `perfilPosgraduado` | `string` | ✅ | Perfil del posgraduado |
-| `idFacultad` | `number` | ✅ | ID de la facultad |
-| `idTipoPrograma` | `number` | ✅ | ID del tipo de programa |
-| `modalidad` | `string` | ✅ | `PRESENCIAL`, `SEMIPRESENCIAL` o `VIRTUAL` |
-| `lineasInvestigacion` | `string` | ✅ | Líneas de investigación |
+| `nombre` | `string` | Si | Nombre del programa |
+| `enConvocatoria` | `boolean` | No | Indica si tiene convocatoria abierta (default `false`) |
+| `imageUrl` | `string` | Si | URL de la imagen del programa |
+| `objetivoGeneral` | `string` | Si | Objetivo general |
+| `objetivosEspecificos` | `string[]` | Si | Array de objetivos especificos |
+| `perfilPosgraduado` | `string` | Si | Perfil del posgraduado |
+| `facultadId` | `number` | Si | ID de la facultad |
+| `tipoProgramaId` | `number` | Si | ID del tipo de programa |
+| `modalidad` | `string` | Si | `PRESENCIAL`, `SEMIPRESENCIAL` o `VIRTUAL` |
+| `lineasInvestigacion` | `string[]` | Si | Array de lineas de investigacion |
+| `costoMatricula` | `number` | Si | Costo de matricula |
 
-**Nota:** El campo `slug` se genera automáticamente desde el `nombre`.
-
-**Respuesta (201 Created):**
-```json
-{
-  "success": true,
-  "message": "Programa creado exitosamente",
-  "data": {
-    "id": 1,
-    "idTipoPrograma": {
-      "id": 1,
-      "nombre": "Pregrado",
-      "imagenCard": null,
-      "imagenBg": null,
-      "slug": "pregrado"
-    },
-    "nombre": "Ingeniería de Sistemas",
-    "idFacultad": {
-      "id": 1,
-      "nombre": "Ingeniería"
-    },
-    "slug": "ingenieria-de-sistemas",
-    "convocatoria": true,
-    "modalidad": "PRESENCIAL",
-    "imagen": "https://ejemplo.com/imagen.jpg",
-    "objetivoGeneral": "Formar profesionales en ingeniería de sistemas",
-    "objetivosEspecificos": "Desarrollar competencias en desarrollo de software",
-    "perfilPosgraduado": "Profesional capacitado para liderar proyectos tecnológicos",
-    "lineasInvestigacion": "Ingeniería de software, Inteligencia artificial"
-  },
-  "timestamp": 1718400000000
-}
-```
+**Nota:** El campo `slug` se genera automaticamente desde el `nombre`.
 
 ---
 
 ## PUT /api/v1/programas/{slug}
 
-Actualiza un programa existente.
+Actualiza un programa existente. Body igual que POST.
 
-**Body:**
-```json
-{
-  "nombre": "Ingeniería de Sistemas Actualizada",
-  "convocatoria": false,
-  "imagen": "https://ejemplo.com/nueva-imagen.jpg",
-  "objetivoGeneral": "Formar profesionales actualizados en ingeniería",
-  "objetivosEspecificos": "Desarrollar competencias avanzadas",
-  "perfilPosgraduado": "Profesional con perfil actualizado",
-  "idFacultad": 1,
-  "idTipoPrograma": 1,
-  "modalidad": "VIRTUAL",
-  "lineasInvestigacion": "Nuevas líneas de investigación"
-}
-```
-
-**Nota:** El campo `slug` se regenera automáticamente desde el `nombre`.
-
-**Ejemplo de respuesta:**
-```json
-{
-  "success": true,
-  "message": "Programa actualizado exitosamente",
-  "data": {
-    "id": 1,
-    "idTipoPrograma": {
-      "id": 1,
-      "nombre": "Pregrado",
-      "slug": "pregrado"
-    },
-    "nombre": "Ingeniería de Sistemas Actualizada",
-    "idFacultad": {
-      "id": 1,
-      "nombre": "Ingeniería"
-    },
-    "slug": "ingenieria-de-sistemas-actualizada",
-    "convocatoria": false,
-    "modalidad": "VIRTUAL",
-    "imagen": "https://ejemplo.com/nueva-imagen.jpg",
-    "objetivoGeneral": "Formar profesionales actualizados en ingeniería",
-    "objetivosEspecificos": "Desarrollar competencias avanzadas",
-    "perfilPosgraduado": "Profesional con perfil actualizado",
-    "lineasInvestigacion": "Nuevas líneas de investigación"
-  },
-  "timestamp": 1718400000000
-}
-```
+**Nota:** El campo `slug` se regenera automaticamente desde el `nombre`.
 
 **Posibles errores:**
 
-| Código | Causa |
+| Codigo | Causa |
 |--------|-------|
-| `400` | Campos obligatorios faltantes o inválidos |
-| `404` | Programa, `idTipoPrograma` o `idFacultad` no existe |
+| `400` | Campos obligatorios faltantes o invalidos |
+| `404` | Programa, `tipoProgramaId` o `facultadId` no existe |
 | `409` | Ya existe un programa con el mismo nombre (slug duplicado) |
 
 ---
@@ -255,18 +142,8 @@ Actualiza un programa existente.
 
 Elimina un programa por su slug.
 
-**Ejemplo de respuesta:**
-```json
-{
-  "success": true,
-  "message": "Programa eliminado exitosamente",
-  "data": null,
-  "timestamp": 1718400000000
-}
-```
-
 **Posibles errores:**
 
-| Código | Causa |
+| Codigo | Causa |
 |--------|-------|
 | `404` | No existe un programa con ese slug |

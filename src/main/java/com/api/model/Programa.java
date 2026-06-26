@@ -2,6 +2,11 @@ package com.api.model;
 
 import java.math.BigDecimal;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import com.api.enums.Modalidad;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,7 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "programa")
+@Table(name = "programas")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -35,32 +40,37 @@ public class Programa {
     @Column(unique = true)
     private String slug;
 
-    private String imagen;
+    @Column(name = "image_url", nullable = false, columnDefinition = "text")
+    private String imageUrl;
 
-    private Boolean convocatoria;
+    @Column(name = "en_convocatoria", nullable = false)
+    @Builder.Default
+    private Boolean enConvocatoria = false;
 
-    @Column(name = "objetivo_general", columnDefinition = "TEXT")
+    @Column(name = "objetivo_general", nullable = false, columnDefinition = "text")
     private String objetivoGeneral;
 
-    @Column(name = "objetivos_especificos", columnDefinition = "TEXT")
-    private String objetivosEspecificos;
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    @Column(name = "objetivos_especificos", columnDefinition = "text[]")
+    private String[] objetivosEspecificos;
 
-    @Column(name = "perfil_posgraduado", columnDefinition = "TEXT")
+    @Column(name = "perfil_posgraduado", nullable = false, columnDefinition = "text")
     private String perfilPosgraduado;
 
     @ManyToOne
-    @JoinColumn(name = "id_facultad")
-    private Facultad idFacultad;
+    @JoinColumn(name = "facultad_id")
+    private Facultad facultad;
 
     @ManyToOne
-    @JoinColumn(name = "id_tipo_programa")
-    private TipoPrograma idTipoPrograma;
+    @JoinColumn(name = "tipo_programa_id")
+    private TipoPrograma tipoPrograma;
 
     @Enumerated(EnumType.STRING)
     private Modalidad modalidad;
 
-    @Column(name = "lineas_investigacion", columnDefinition = "TEXT")
-    private String lineasInvestigacion;
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    @Column(name = "lineas_investigacion", columnDefinition = "text[]")
+    private String[] lineasInvestigacion;
 
     @Column(name = "costo_matricula", precision = 10, scale = 2)
     private BigDecimal costoMatricula;

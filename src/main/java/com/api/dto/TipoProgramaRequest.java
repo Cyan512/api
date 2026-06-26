@@ -6,7 +6,9 @@ public record TipoProgramaRequest(
     @NotBlank(message = "El nombre es obligatorio")
     String nombre,
 
-    String imagenCard,
+    @NotBlank(message = "La imagen de tarjeta es obligatoria")
+    String cardImageUrl,
 
-    String imagenBg
+    @NotBlank(message = "La imagen de fondo es obligatoria")
+    String heroBgUrl
 ) {}

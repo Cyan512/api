@@ -51,8 +51,8 @@ public class TipoProgramaServiceImpl implements TipoProgramaService {
 
         var tipoPrograma = TipoPrograma.builder()
                 .nombre(request.nombre())
-                .imagenCard(request.imagenCard())
-                .imagenBg(request.imagenBg())
+                .cardImageUrl(request.cardImageUrl())
+                .heroBgUrl(request.heroBgUrl())
                 .slug(slug)
                 .build();
         return tipoProgramaRepository.save(tipoPrograma);
@@ -72,8 +72,8 @@ public class TipoProgramaServiceImpl implements TipoProgramaService {
         }
 
         tipoPrograma.setNombre(request.nombre());
-        tipoPrograma.setImagenCard(request.imagenCard());
-        tipoPrograma.setImagenBg(request.imagenBg());
+        tipoPrograma.setCardImageUrl(request.cardImageUrl());
+        tipoPrograma.setHeroBgUrl(request.heroBgUrl());
         tipoPrograma.setSlug(newSlug);
         return tipoProgramaRepository.save(tipoPrograma);
     }

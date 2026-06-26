@@ -86,12 +86,11 @@ class TipoProgramaControllerTest {
     @Test
     void crear_returns201() throws Exception {
         var tipo = TipoPrograma.builder().id(1L).nombre("Pregrado").slug("pregrado").build();
-        when(tipoProgramaService.createTipoPrograma(new TipoProgramaRequest("Pregrado", null, null)))
-                .thenReturn(tipo);
+        when(tipoProgramaService.createTipoPrograma(any())).thenReturn(tipo);
 
         mockMvc.perform(post("/api/v1/tipos-programa")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"nombre\":\"Pregrado\"}"))
+                        .content("{\"nombre\":\"Pregrado\",\"cardImageUrl\":\"card.jpg\",\"heroBgUrl\":\"hero.jpg\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.message").value("Tipo de programa creado exitosamente"))
@@ -125,7 +124,7 @@ class TipoProgramaControllerTest {
 
         mockMvc.perform(put("/api/v1/tipos-programa/pregrado")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"nombre\":\"Posgrado\"}"))
+                        .content("{\"nombre\":\"Posgrado\",\"cardImageUrl\":\"card.jpg\",\"heroBgUrl\":\"hero.jpg\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.nombre").value("Posgrado"));

@@ -1,6 +1,6 @@
 package com.api.dto;
 
-import com.api.model.Categoria;
+import com.api.enums.Categoria;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

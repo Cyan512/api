@@ -26,7 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.api.config.GlobalExceptionHandler;
 import com.api.dto.ProgramaRequest;
-import com.api.model.Modalidad;
+import com.api.enums.Modalidad;
 import com.api.model.Programa;
 import com.api.service.ProgramaService;
 
@@ -69,7 +69,7 @@ class ProgramaControllerTest {
 
         mockMvc.perform(post("/api/v1/programas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"nombre\":\"Ingeniería\",\"convocatoria\":true,\"imagen\":null,\"objetivoGeneral\":\"Formar profesionales\",\"objetivosEspecificos\":\"Desarrollar competencias\",\"perfilPosgraduado\":\"Perfil profesional\",\"idFacultad\":1,\"idTipoPrograma\":1,\"modalidad\":\"PRESENCIAL\",\"lineasInvestigacion\":\"Ingeniería de software\",\"costoMatricula\":1000}"))
+                        .content("{\"nombre\":\"Ingeniería\",\"enConvocatoria\":true,\"imageUrl\":\"https://img.jpg\",\"objetivoGeneral\":\"Formar profesionales\",\"objetivosEspecificos\":[\"Desarrollar competencias\"],\"perfilPosgraduado\":\"Perfil profesional\",\"facultadId\":1,\"tipoProgramaId\":1,\"modalidad\":\"PRESENCIAL\",\"lineasInvestigacion\":[\"Ingeniería de software\"],\"costoMatricula\":1000}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.nombre").value("Ingeniería"));
@@ -79,7 +79,7 @@ class ProgramaControllerTest {
     void crear_returns400_whenNombreIsBlank() throws Exception {
         mockMvc.perform(post("/api/v1/programas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"nombre\":\"\",\"idFacultad\":1,\"idTipoPrograma\":1,\"modalidad\":\"PRESENCIAL\",\"objetivoGeneral\":\"Obj\",\"objetivosEspecificos\":\"Esp\",\"perfilPosgraduado\":\"Perfil\",\"lineasInvestigacion\":\"Lineas\"}"))
+                        .content("{\"nombre\":\"\",\"facultadId\":1,\"tipoProgramaId\":1,\"modalidad\":\"PRESENCIAL\",\"imageUrl\":\"https://img.jpg\",\"objetivoGeneral\":\"Obj\",\"objetivosEspecificos\":[\"Esp\"],\"perfilPosgraduado\":\"Perfil\",\"lineasInvestigacion\":[\"Lineas\"],\"costoMatricula\":1000}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Error de validación"));
@@ -122,7 +122,7 @@ class ProgramaControllerTest {
 
         mockMvc.perform(put("/api/v1/programas/ingenieria-sistemas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"nombre\":\"Ingeniería Actualizada\",\"convocatoria\":true,\"imagen\":null,\"objetivoGeneral\":\"Formar profesionales\",\"objetivosEspecificos\":\"Desarrollar competencias\",\"perfilPosgraduado\":\"Perfil profesional\",\"idFacultad\":1,\"idTipoPrograma\":1,\"modalidad\":\"VIRTUAL\",\"lineasInvestigacion\":\"Ingeniería de software\",\"costoMatricula\":1000}"))
+                        .content("{\"nombre\":\"Ingeniería Actualizada\",\"enConvocatoria\":true,\"imageUrl\":\"https://img.jpg\",\"objetivoGeneral\":\"Formar profesionales\",\"objetivosEspecificos\":[\"Desarrollar competencias\"],\"perfilPosgraduado\":\"Perfil profesional\",\"facultadId\":1,\"tipoProgramaId\":1,\"modalidad\":\"VIRTUAL\",\"lineasInvestigacion\":[\"Ingeniería de software\"],\"costoMatricula\":1000}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.nombre").value("Ingeniería Actualizada"));
@@ -132,7 +132,7 @@ class ProgramaControllerTest {
     void actualizar_returns400_whenNombreIsBlank() throws Exception {
         mockMvc.perform(put("/api/v1/programas/ingenieria-sistemas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"nombre\":\"\",\"idFacultad\":1,\"idTipoPrograma\":1,\"modalidad\":\"VIRTUAL\",\"objetivoGeneral\":\"Obj\",\"objetivosEspecificos\":\"Esp\",\"perfilPosgraduado\":\"Perfil\",\"lineasInvestigacion\":\"Lineas\"}"))
+                        .content("{\"nombre\":\"\",\"facultadId\":1,\"tipoProgramaId\":1,\"modalidad\":\"VIRTUAL\",\"imageUrl\":\"https://img.jpg\",\"objetivoGeneral\":\"Obj\",\"objetivosEspecificos\":[\"Esp\"],\"perfilPosgraduado\":\"Perfil\",\"lineasInvestigacion\":[\"Lineas\"],\"costoMatricula\":1000}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Error de validación"));

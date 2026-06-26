@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.api.dto.ProgramaRequest;
+import com.api.enums.Modalidad;
 import com.api.model.Facultad;
-import com.api.model.Modalidad;
 import com.api.model.Programa;
 import com.api.model.TipoPrograma;
 import com.api.repository.FacultadRepository;
@@ -55,16 +55,16 @@ public class ProgramaServiceImpl implements ProgramaService {
     @Override
     @Transactional
     public Programa createPrograma(ProgramaRequest request) {
-        var tipoPrograma = tipoProgramaRepository.findById(request.idTipoPrograma())
+        var tipoPrograma = tipoProgramaRepository.findById(request.tipoProgramaId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "Tipo de programa no encontrado con id: " + request.idTipoPrograma()
+                        "Tipo de programa no encontrado con id: " + request.tipoProgramaId()
                 ));
 
-        var facultad = facultadRepository.findById(request.idFacultad())
+        var facultad = facultadRepository.findById(request.facultadId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "Facultad no encontrada con id: " + request.idFacultad()
+                        "Facultad no encontrada con id: " + request.facultadId()
                 ));
 
         var slug = generarSlug(request.nombre());
@@ -77,13 +77,13 @@ public class ProgramaServiceImpl implements ProgramaService {
         }
 
         var programa = Programa.builder()
-                .idTipoPrograma(tipoPrograma)
+                .tipoPrograma(tipoPrograma)
                 .nombre(request.nombre())
-                .idFacultad(facultad)
+                .facultad(facultad)
                 .slug(slug)
-                .convocatoria(request.convocatoria())
+                .enConvocatoria(request.enConvocatoria() != null ? request.enConvocatoria() : false)
                 .modalidad(request.modalidad())
-                .imagen(request.imagen())
+                .imageUrl(request.imageUrl())
                 .objetivoGeneral(request.objetivoGeneral())
                 .objetivosEspecificos(request.objetivosEspecificos())
                 .lineasInvestigacion(request.lineasInvestigacion())
@@ -98,16 +98,16 @@ public class ProgramaServiceImpl implements ProgramaService {
     public Programa updatePrograma(String slug, ProgramaRequest request) {
         var programa = getProgramaBySlug(slug);
 
-        var tipoPrograma = tipoProgramaRepository.findById(request.idTipoPrograma())
+        var tipoPrograma = tipoProgramaRepository.findById(request.tipoProgramaId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "Tipo de programa no encontrado con id: " + request.idTipoPrograma()
+                        "Tipo de programa no encontrado con id: " + request.tipoProgramaId()
                 ));
 
-        var facultad = facultadRepository.findById(request.idFacultad())
+        var facultad = facultadRepository.findById(request.facultadId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "Facultad no encontrada con id: " + request.idFacultad()
+                        "Facultad no encontrada con id: " + request.facultadId()
                 ));
 
         var newSlug = generarSlug(request.nombre());
@@ -119,17 +119,18 @@ public class ProgramaServiceImpl implements ProgramaService {
             );
         }
 
-        programa.setIdTipoPrograma(tipoPrograma);
+        programa.setTipoPrograma(tipoPrograma);
         programa.setNombre(request.nombre());
-        programa.setIdFacultad(facultad);
+        programa.setFacultad(facultad);
         programa.setSlug(newSlug);
-        programa.setConvocatoria(request.convocatoria());
+        programa.setEnConvocatoria(request.enConvocatoria() != null ? request.enConvocatoria() : false);
         programa.setModalidad(request.modalidad());
-        programa.setImagen(request.imagen());
+        programa.setImageUrl(request.imageUrl());
         programa.setObjetivoGeneral(request.objetivoGeneral());
         programa.setObjetivosEspecificos(request.objetivosEspecificos());
         programa.setLineasInvestigacion(request.lineasInvestigacion());
         programa.setPerfilPosgraduado(request.perfilPosgraduado());
+        programa.setCostoMatricula(request.costoMatricula());
         return programaRepository.save(programa);
     }
 

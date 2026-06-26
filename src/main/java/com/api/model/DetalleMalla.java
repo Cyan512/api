@@ -17,31 +17,28 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "programa_curso")
+@Table(name = "detalle_malla")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProgramaCurso {
+public class DetalleMalla {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer semestre;
+    @Column(name = "num_semestre", nullable = false)
+    private Integer numSemestre;
 
-    @Column(nullable = false)
-    private Boolean electivo = false;
-
-    @Column(name = "costo_cuota", precision = 10, scale = 2)
-    private BigDecimal costoCuota;
+    @Column(name = "costo_soles", precision = 10, scale = 2, nullable = false)
+    private BigDecimal costoSoles;
 
     @ManyToOne
-    @JoinColumn(name = "id_programa")
-    private Programa idPrograma;
+    @JoinColumn(name = "curso_id")
+    private Curso curso;
 
     @ManyToOne
-    @JoinColumn(name = "id_curso")
-    private Curso idCurso;
-
+    @JoinColumn(name = "programa_id")
+    private Programa programa;
 }

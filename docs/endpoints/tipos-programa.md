@@ -17,28 +17,18 @@ Lista todos los tipos de programa.
     {
       "id": 1,
       "nombre": "Pregrado",
-      "imagenCard": "pregrado-card.jpg",
-      "imagenBg": "pregrado-bg.jpg",
+      "cardImageUrl": "pregrado-card.jpg",
+      "heroBgUrl": "pregrado-bg.jpg",
       "slug": "pregrado"
     },
     {
       "id": 2,
-      "nombre": "Maestría",
-      "imagenCard": null,
-      "imagenBg": null,
+      "nombre": "Maestria",
+      "cardImageUrl": "maestria-card.jpg",
+      "heroBgUrl": "maestria-bg.jpg",
       "slug": "maestria"
     }
   ],
-  "timestamp": 1718400000000
-}
-```
-
-**Respuesta vacía:**
-```json
-{
-  "success": true,
-  "message": "Tipos de programa obtenidos exitosamente",
-  "data": [],
   "timestamp": 1718400000000
 }
 ```
@@ -53,22 +43,22 @@ Crea un nuevo tipo de programa.
 ```json
 {
   "nombre": "Diplomado",
-  "imagenCard": "diplomado-card.jpg",
-  "imagenBg": "diplomado-bg.jpg"
+  "cardImageUrl": "diplomado-card.jpg",
+  "heroBgUrl": "diplomado-bg.jpg"
 }
 ```
 
 **Campos:**
 
-| Campo | Tipo | Obligatorio | Descripción |
+| Campo | Tipo | Obligatorio | Descripcion |
 |-------|------|-------------|-------------|
-| `nombre` | `string` | ✅ | Nombre del tipo de programa |
-| `imagenCard` | `string` | ❌ | URL de imagen para tarjeta |
-| `imagenBg` | `string` | ❌ | URL de imagen de fondo |
+| `nombre` | `string` | Si | Nombre del tipo de programa |
+| `cardImageUrl` | `string` | Si | URL de imagen para tarjeta |
+| `heroBgUrl` | `string` | Si | URL de imagen de fondo |
 
-**Nota:** El campo `slug` se genera automáticamente desde el `nombre`.
+**Nota:** El campo `slug` se genera automaticamente desde el `nombre`.
 
-**Ejemplo de respuesta (201 Created):**
+**Respuesta (201 Created):**
 ```json
 {
   "success": true,
@@ -76,8 +66,8 @@ Crea un nuevo tipo de programa.
   "data": {
     "id": 3,
     "nombre": "Diplomado",
-    "imagenCard": "diplomado-card.jpg",
-    "imagenBg": "diplomado-bg.jpg",
+    "cardImageUrl": "diplomado-card.jpg",
+    "heroBgUrl": "diplomado-bg.jpg",
     "slug": "diplomado"
   },
   "timestamp": 1718400000000
@@ -88,27 +78,11 @@ Crea un nuevo tipo de programa.
 
 ## GET /api/v1/tipos-programa/{slug}
 
-Obtiene un tipo de programa específico por su slug.
-
-**Ejemplo de respuesta:**
-```json
-{
-  "success": true,
-  "message": "Tipo de programa encontrado exitosamente",
-  "data": {
-    "id": 1,
-    "nombre": "Pregrado",
-    "imagenCard": "pregrado-card.jpg",
-    "imagenBg": "pregrado-bg.jpg",
-    "slug": "pregrado"
-  },
-  "timestamp": 1718400000000
-}
-```
+Obtiene un tipo de programa especifico por su slug.
 
 **Posibles errores:**
 
-| Código | Causa |
+| Codigo | Causa |
 |--------|-------|
 | `404` | No existe un tipo de programa con ese slug |
 
@@ -118,38 +92,15 @@ Obtiene un tipo de programa específico por su slug.
 
 Actualiza un tipo de programa existente.
 
-**Body:**
-```json
-{
-  "nombre": "Diplomado",
-  "imagenCard": "diplomado-card.jpg",
-  "imagenBg": "diplomado-bg.jpg"
-}
-```
+**Body:** Igual que POST.
 
-**Nota:** El campo `slug` se regenera automáticamente desde el `nombre`.
-
-**Ejemplo de respuesta:**
-```json
-{
-  "success": true,
-  "message": "Tipo de programa actualizado exitosamente",
-  "data": {
-    "id": 1,
-    "nombre": "Diplomado",
-    "imagenCard": "diplomado-card.jpg",
-    "imagenBg": "diplomado-bg.jpg",
-    "slug": "diplomado"
-  },
-  "timestamp": 1718400000000
-}
-```
+**Nota:** El campo `slug` se regenera automaticamente desde el `nombre`.
 
 **Posibles errores:**
 
-| Código | Causa |
+| Codigo | Causa |
 |--------|-------|
-| `400` | `nombre` vacío o no enviado |
+| `400` | `nombre`, `cardImageUrl` o `heroBgUrl` vacios |
 | `404` | No existe un tipo de programa con ese slug |
 | `409` | El slug generado ya existe (mismo nombre) |
 
@@ -159,18 +110,8 @@ Actualiza un tipo de programa existente.
 
 Elimina un tipo de programa por su slug.
 
-**Ejemplo de respuesta:**
-```json
-{
-  "success": true,
-  "message": "Tipo de programa eliminado exitosamente",
-  "data": null,
-  "timestamp": 1718400000000
-}
-```
-
 **Posibles errores:**
 
-| Código | Causa |
+| Codigo | Causa |
 |--------|-------|
 | `404` | No existe un tipo de programa con ese slug |

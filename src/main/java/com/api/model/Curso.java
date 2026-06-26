@@ -1,5 +1,7 @@
 package com.api.model;
 
+import com.api.enums.Categoria;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "curso")
+@Table(name = "cursos")
 @Getter
 @Setter
 @NoArgsConstructor

@@ -3,7 +3,7 @@ package com.api.service;
 import java.util.List;
 
 import com.api.dto.ProgramaRequest;
-import com.api.model.Modalidad;
+import com.api.enums.Modalidad;
 import com.api.model.Programa;
 
 public interface ProgramaService {

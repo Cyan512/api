@@ -1,4 +1,4 @@
-package com.api.model;
+package com.api.enums;
 
 public enum Categoria {
     OE, EE

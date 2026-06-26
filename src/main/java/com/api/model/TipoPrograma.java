@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tipo_programa")
+@Table(name = "tipos_programa")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,11 +26,11 @@ public class TipoPrograma {
 
     private String nombre;
 
-    @Column(name = "imagen_card")
-    private String imagenCard;
+    @Column(name = "card_image_url", nullable = false, columnDefinition = "text")
+    private String cardImageUrl;
 
-    @Column(name = "imagen_bg")
-    private String imagenBg;
+    @Column(name = "hero_bg_url", nullable = false, columnDefinition = "text")
+    private String heroBgUrl;
 
     @Column(unique = true)
     private String slug;

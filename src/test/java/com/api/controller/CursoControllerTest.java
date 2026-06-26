@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.api.config.GlobalExceptionHandler;
-import com.api.model.Categoria;
+import com.api.enums.Categoria;
 import com.api.model.Curso;
 import com.api.service.CursoService;
 

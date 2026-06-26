@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.api.dto.CursoRequest;
-import com.api.model.Categoria;
+import com.api.enums.Categoria;
 import com.api.model.Curso;
 import com.api.repository.CursoRepository;
 import com.api.service.impl.CursoServiceImpl;

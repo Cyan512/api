@@ -32,8 +32,7 @@ public class FacultadServiceImpl implements FacultadService {
         return facultadRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "Facultad no encontrada con id: " + id
-                ));
+                        "Facultad no encontrada con id: " + id));
     }
 
     @Override
