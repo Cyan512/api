@@ -10,9 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.api.dto.ProgramaRequest;
 import com.api.enums.Modalidad;
-import com.api.model.Facultad;
 import com.api.model.Programa;
-import com.api.model.TipoPrograma;
 import com.api.repository.FacultadRepository;
 import com.api.repository.ProgramaRepository;
 import com.api.repository.ProgramaSpecification;

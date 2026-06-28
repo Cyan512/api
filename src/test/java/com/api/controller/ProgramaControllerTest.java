@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.api.config.GlobalExceptionHandler;
-import com.api.dto.ProgramaRequest;
 import com.api.enums.Modalidad;
 import com.api.model.Programa;
 import com.api.service.ProgramaService;
