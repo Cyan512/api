@@ -6,9 +6,12 @@
 
 ## GET /api/v1/facultades
 
+🌐 **Público**
+
 Lista todas las facultades.
 
 **Ejemplo de respuesta:**
+
 ```json
 {
   "success": true,
@@ -31,9 +34,12 @@ Lista todas las facultades.
 
 ## POST /api/v1/facultades
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Crea una nueva facultad.
 
 **Body:**
+
 ```json
 {
   "nombre": "Arquitectura"
@@ -47,6 +53,7 @@ Crea una nueva facultad.
 | `nombre` | `string` | ✅ | Nombre de la facultad |
 
 **Ejemplo de respuesta (201 Created):**
+
 ```json
 {
   "success": true,
@@ -63,9 +70,12 @@ Crea una nueva facultad.
 
 ## GET /api/v1/facultades/{id}
 
+🌐 **Público**
+
 Obtiene una facultad específica por su ID.
 
 **Ejemplo de respuesta:**
+
 ```json
 {
   "success": true,
@@ -88,9 +98,12 @@ Obtiene una facultad específica por su ID.
 
 ## PUT /api/v1/facultades/{id}
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Actualiza una facultad existente.
 
 **Body:**
+
 ```json
 {
   "nombre": "Arquitectura y Urbanismo"
@@ -98,6 +111,7 @@ Actualiza una facultad existente.
 ```
 
 **Ejemplo de respuesta:**
+
 ```json
 {
   "success": true,
@@ -121,9 +135,12 @@ Actualiza una facultad existente.
 
 ## DELETE /api/v1/facultades/{id}
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Elimina una facultad por su ID.
 
 **Ejemplo de respuesta:**
+
 ```json
 {
   "success": true,

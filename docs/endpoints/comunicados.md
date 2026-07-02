@@ -6,6 +6,8 @@
 
 ## GET /api/v1/comunicados
 
+🌐 **Público**
+
 Lista todos los comunicados.
 
 ### Ejemplos de uso
@@ -15,6 +17,7 @@ GET /api/v1/comunicados
 ```
 
 **Respuesta:**
+
 ```json
 {
   "success": true,
@@ -38,6 +41,8 @@ GET /api/v1/comunicados
 
 ## GET /api/v1/comunicados/{slug}
 
+🌐 **Público**
+
 Obtiene un comunicado específico por su slug.
 
 **Parámetros:**
@@ -47,6 +52,7 @@ Obtiene un comunicado específico por su slug.
 | `slug` | `string` | `nuevo-comunicado` | Slug único del comunicado |
 
 **Respuesta:**
+
 ```json
 {
   "success": true,
@@ -74,9 +80,12 @@ Obtiene un comunicado específico por su slug.
 
 ## POST /api/v1/comunicados
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Crea un nuevo comunicado.
 
 **Body:**
+
 ```json
 {
   "titulo": "Nuevo comunicado",
@@ -98,6 +107,7 @@ Crea un nuevo comunicado.
 **Nota:** El campo `slug` se genera automáticamente desde el `titulo` y `fechaPublicacion` se asigna automáticamente con la fecha actual.
 
 **Respuesta (201 Created):**
+
 ```json
 {
   "success": true,
@@ -126,9 +136,12 @@ Crea un nuevo comunicado.
 
 ## PUT /api/v1/comunicados/{slug}
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Actualiza un comunicado existente.
 
 **Body:**
+
 ```json
 {
   "titulo": "Comunicado actualizado",
@@ -141,6 +154,7 @@ Actualiza un comunicado existente.
 **Nota:** El campo `slug` se regenera automáticamente desde el `titulo`. La `fechaPublicacion` se mantiene de la creación original.
 
 **Ejemplo de respuesta:**
+
 ```json
 {
   "success": true,
@@ -170,9 +184,12 @@ Actualiza un comunicado existente.
 
 ## DELETE /api/v1/comunicados/{slug}
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Elimina un comunicado por su slug.
 
 **Ejemplo de respuesta:**
+
 ```json
 {
   "success": true,

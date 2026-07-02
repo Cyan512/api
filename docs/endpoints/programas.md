@@ -6,19 +6,22 @@
 
 ## GET /api/v1/programas
 
+🌐 **Público**
+
 Lista programas con filtros opcionales.
 
-### Parametros (todos opcionales)
+### Parámetros (todos opcionales)
 
-| Parametro | Tipo | Ejemplo | Descripcion |
+| Parámetro | Tipo | Ejemplo | Descripción |
 |-----------|------|---------|-------------|
 | `tipoSlug` | `string` | `maestria` | Filtra por tipo de programa (slug) |
-| `q` | `string` | `sistemas` | Busqueda textual por nombre |
+| `q` | `string` | `sistemas` | Búsqueda textual por nombre |
 | `modalidad` | `string` | `VIRTUAL` | Filtra por modalidad (`PRESENCIAL`, `SEMIPRESENCIAL`, `VIRTUAL`) |
 | `idFacultad` | `number` | `1` | Filtra por ID de facultad |
 | `convocatoria` | `boolean` | `true` | Filtra por convocatoria abierta/cerrada |
 
 **Respuesta:**
+
 ```json
 {
   "success": true,
@@ -59,17 +62,19 @@ Lista programas con filtros opcionales.
 }
 ```
 
-> **Nota:** `objetivosEspecificos` y `lineasInvestigacion` ahora son arrays de strings (`text[]` en BD).
+> **Nota:** `objetivosEspecificos` y `lineasInvestigacion` son arrays de strings (`text[]` en BD).
 
 ---
 
 ## GET /api/v1/programas/{slug}
 
-Obtiene un programa especifico por su slug.
+🌐 **Público**
+
+Obtiene un programa específico por su slug.
 
 **Posibles errores:**
 
-| Codigo | Causa |
+| Código | Causa |
 |--------|-------|
 | `404` | No existe un programa con ese slug |
 
@@ -77,9 +82,12 @@ Obtiene un programa especifico por su slug.
 
 ## POST /api/v1/programas
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Crea un nuevo programa.
 
 **Body:**
+
 ```json
 {
   "nombre": "Ingenieria de Sistemas",
@@ -104,35 +112,37 @@ Crea un nuevo programa.
 
 **Campos:**
 
-| Campo | Tipo | Obligatorio | Descripcion |
+| Campo | Tipo | Obligatorio | Descripción |
 |-------|------|-------------|-------------|
-| `nombre` | `string` | Si | Nombre del programa |
+| `nombre` | `string` | Sí | Nombre del programa |
 | `enConvocatoria` | `boolean` | No | Indica si tiene convocatoria abierta (default `false`) |
-| `imageUrl` | `string` | Si | URL de la imagen del programa |
-| `objetivoGeneral` | `string` | Si | Objetivo general |
-| `objetivosEspecificos` | `string[]` | Si | Array de objetivos especificos |
-| `perfilPosgraduado` | `string` | Si | Perfil del posgraduado |
-| `facultadId` | `number` | Si | ID de la facultad |
-| `tipoProgramaId` | `number` | Si | ID del tipo de programa |
-| `modalidad` | `string` | Si | `PRESENCIAL`, `SEMIPRESENCIAL` o `VIRTUAL` |
-| `lineasInvestigacion` | `string[]` | Si | Array de lineas de investigacion |
-| `costoMatricula` | `number` | Si | Costo de matricula |
+| `imageUrl` | `string` | Sí | URL de la imagen del programa |
+| `objetivoGeneral` | `string` | Sí | Objetivo general |
+| `objetivosEspecificos` | `string[]` | Sí | Array de objetivos específicos |
+| `perfilPosgraduado` | `string` | Sí | Perfil del posgraduado |
+| `facultadId` | `number` | Sí | ID de la facultad |
+| `tipoProgramaId` | `number` | Sí | ID del tipo de programa |
+| `modalidad` | `string` | Sí | `PRESENCIAL`, `SEMIPRESENCIAL` o `VIRTUAL` |
+| `lineasInvestigacion` | `string[]` | Sí | Array de líneas de investigación |
+| `costoMatricula` | `number` | Sí | Costo de matrícula |
 
-**Nota:** El campo `slug` se genera automaticamente desde el `nombre`.
+**Nota:** El campo `slug` se genera automáticamente desde el `nombre`.
 
 ---
 
 ## PUT /api/v1/programas/{slug}
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Actualiza un programa existente. Body igual que POST.
 
-**Nota:** El campo `slug` se regenera automaticamente desde el `nombre`.
+**Nota:** El campo `slug` se regenera automáticamente desde el `nombre`.
 
 **Posibles errores:**
 
-| Codigo | Causa |
+| Código | Causa |
 |--------|-------|
-| `400` | Campos obligatorios faltantes o invalidos |
+| `400` | Campos obligatorios faltantes o inválidos |
 | `404` | Programa, `tipoProgramaId` o `facultadId` no existe |
 | `409` | Ya existe un programa con el mismo nombre (slug duplicado) |
 
@@ -140,10 +150,12 @@ Actualiza un programa existente. Body igual que POST.
 
 ## DELETE /api/v1/programas/{slug}
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Elimina un programa por su slug.
 
 **Posibles errores:**
 
-| Codigo | Causa |
+| Código | Causa |
 |--------|-------|
 | `404` | No existe un programa con ese slug |

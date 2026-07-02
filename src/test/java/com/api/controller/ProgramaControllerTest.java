@@ -25,12 +25,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.api.config.GlobalExceptionHandler;
+import com.api.config.TestSecurityConfig;
 import com.api.enums.Modalidad;
 import com.api.model.Programa;
 import com.api.service.ProgramaService;
 
 @WebMvcTest(ProgramaController.class)
-@Import(GlobalExceptionHandler.class)
+@Import({GlobalExceptionHandler.class, TestSecurityConfig.class})
 class ProgramaControllerTest {
 
     @Autowired

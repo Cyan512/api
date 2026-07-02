@@ -25,11 +25,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.api.config.GlobalExceptionHandler;
+import com.api.config.TestSecurityConfig;
 import com.api.model.Comunicado;
 import com.api.service.ComunicadoService;
 
 @WebMvcTest(ComunicadoController.class)
-@Import(GlobalExceptionHandler.class)
+@Import({GlobalExceptionHandler.class, TestSecurityConfig.class})
 class ComunicadoControllerTest {
 
     @Autowired

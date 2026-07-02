@@ -19,5 +19,11 @@ spring:
 cors:
   allowed-origins: ${CORS_ORIGINS}
 
+jwt:
+  secret: ${JWT_SECRET}
+  access-expiration-ms: 1800000
+  refresh-expiration-ms: 2592000000
+  issuer: posgrado-api
+
 server:
   port: 8081

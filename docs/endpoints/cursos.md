@@ -6,9 +6,12 @@
 
 ## GET /api/v1/cursos
 
+🌐 **Público**
+
 Lista todos los cursos.
 
 **Ejemplo de respuesta:**
+
 ```json
 {
   "success": true,
@@ -35,9 +38,12 @@ Lista todos los cursos.
 
 ## POST /api/v1/cursos
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Crea un nuevo curso.
 
 **Body:**
+
 ```json
 {
   "nombre": "Base de Datos",
@@ -55,6 +61,7 @@ Crea un nuevo curso.
 | `categoria` | `string` | ✅ | `OE` (obligatorio específico) o `EE` (electivo específico) |
 
 **Ejemplo de respuesta (201 Created):**
+
 ```json
 {
   "success": true,
@@ -73,9 +80,12 @@ Crea un nuevo curso.
 
 ## GET /api/v1/cursos/{id}
 
+🌐 **Público**
+
 Obtiene un curso específico por su ID.
 
 **Ejemplo de respuesta:**
+
 ```json
 {
   "success": true,
@@ -100,9 +110,12 @@ Obtiene un curso específico por su ID.
 
 ## PUT /api/v1/cursos/{id}
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Actualiza un curso existente.
 
 **Body:**
+
 ```json
 {
   "nombre": "Matemáticas Avanzadas",
@@ -112,6 +125,7 @@ Actualiza un curso existente.
 ```
 
 **Ejemplo de respuesta:**
+
 ```json
 {
   "success": true,
@@ -137,9 +151,12 @@ Actualiza un curso existente.
 
 ## DELETE /api/v1/cursos/{id}
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Elimina un curso por su ID.
 
 **Ejemplo de respuesta:**
+
 ```json
 {
   "success": true,

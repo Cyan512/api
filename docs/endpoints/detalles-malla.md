@@ -6,16 +6,19 @@
 
 ## GET /api/v1/detalles-malla
 
+🌐 **Público**
+
 Lista los detalles de malla. Opcionalmente filtrable por programa y/o semestre.
 
-### Parametros (todos opcionales)
+### Parámetros (todos opcionales)
 
-| Parametro | Tipo | Ejemplo | Descripcion |
+| Parámetro | Tipo | Ejemplo | Descripción |
 |-----------|------|---------|-------------|
 | `programaId` | `number` | `1` | Filtra por ID de programa |
-| `numSemestre` | `number` | `2` | Filtra por numero de semestre (requiere `programaId`) |
+| `numSemestre` | `number` | `2` | Filtra por número de semestre (requiere `programaId`) |
 
 **Ejemplo de respuesta:**
+
 ```json
 {
   "success": true,
@@ -23,38 +26,38 @@ Lista los detalles de malla. Opcionalmente filtrable por programa y/o semestre.
   "data": [
     {
       "id": 1,
-      "programa": {
-        "id": 1,
-        "nombre": "Ingenieria de Sistemas",
-        "slug": "ingenieria-de-sistemas"
-      },
       "numSemestre": 1,
-      "orden": 1,
-      "esEspacioElectivo": false,
+      "costoSoles": 500.00,
       "curso": {
         "id": 1,
-        "nombre": "Matematicas Basicas",
+        "nombre": "Matemáticas Básicas",
         "creditos": 4,
         "categoria": "OE"
       },
-      "costoSoles": 500.00
+      "programa": {
+        "id": 1,
+        "nombre": "Ingeniería de Sistemas",
+        "slug": "ingenieria-de-sistemas"
+      }
     }
   ],
   "timestamp": 1718400000000
 }
 ```
 
-> *Nota:* Cuando `esEspacioElectivo` es `true`, `curso` sera `null`.
+> *Nota:* Cuando el detalle corresponde a un espacio electivo, `curso` será `null`.
 
 ---
 
 ## GET /api/v1/detalles-malla/{id}
 
+🌐 **Público**
+
 Obtiene un detalle de malla por su ID.
 
 **Posibles errores:**
 
-| Codigo | Causa |
+| Código | Causa |
 |--------|-------|
 | `404` | No existe un detalle con ese ID |
 
@@ -62,61 +65,57 @@ Obtiene un detalle de malla por su ID.
 
 ## POST /api/v1/detalles-malla
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Crea un nuevo detalle de malla.
 
 **Body (curso obligatorio):**
+
 ```json
 {
   "programaId": 1,
   "numSemestre": 1,
-  "orden": 1,
-  "esEspacioElectivo": false,
   "cursoId": 1,
   "costoSoles": 500.00
 }
 ```
 
 **Body (espacio electivo, sin curso fijo):**
+
 ```json
 {
   "programaId": 1,
   "numSemestre": 3,
-  "orden": 1,
-  "esEspacioElectivo": true,
   "costoSoles": 600.00
 }
 ```
 
 **Campos:**
 
-| Campo | Tipo | Obligatorio | Descripcion |
+| Campo | Tipo | Obligatorio | Descripción |
 |-------|------|-------------|-------------|
-| `programaId` | `number` | Si | ID del programa |
-| `numSemestre` | `number` | Si | Numero de semestre (>=1) |
-| `orden` | `number` | Si | Orden dentro del semestre |
-| `esEspacioElectivo` | `boolean` | Si | `true` si es electivo, `false` si es obligatorio |
-| `cursoId` | `number` | Condicional | Obligatorio si `esEspacioElectivo` es `false` |
-| `costoSoles` | `number` | Si | Costo en soles |
-
-**Reglas de validacion:**
-- Si `esEspacioElectivo = false` → `cursoId` obligatorio.
-- Si `esEspacioElectivo = true` → `cursoId` **no** debe enviarse.
+| `programaId` | `number` | Sí | ID del programa |
+| `numSemestre` | `number` | Sí | Número de semestre (≥ 1) |
+| `cursoId` | `number` | No | ID del curso. `null` si es espacio electivo. |
+| `costoSoles` | `number` | Sí | Costo en soles |
 
 **Posibles errores:**
 
-| Codigo | Causa |
+| Código | Causa |
 |--------|-------|
-| `400` | Campos faltantes o regla electivo/curso rota |
+| `400` | Campos faltantes |
 | `404` | `programaId` o `cursoId` no existe |
 
 ---
 
 ## DELETE /api/v1/detalles-malla/{id}
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Elimina un detalle de malla por su ID.
 
 **Posibles errores:**
 
-| Codigo | Causa |
+| Código | Causa |
 |--------|-------|
 | `404` | No existe un detalle con ese ID |

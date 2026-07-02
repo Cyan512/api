@@ -25,11 +25,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.api.config.GlobalExceptionHandler;
+import com.api.config.TestSecurityConfig;
 import com.api.model.Facultad;
 import com.api.service.FacultadService;
 
 @WebMvcTest(FacultadController.class)
-@Import(GlobalExceptionHandler.class)
+@Import({GlobalExceptionHandler.class, TestSecurityConfig.class})
 class FacultadControllerTest {
 
     @Autowired

@@ -6,9 +6,12 @@
 
 ## GET /api/v1/tipos-programa
 
+🌐 **Público**
+
 Lista todos los tipos de programa.
 
 **Ejemplo de respuesta:**
+
 ```json
 {
   "success": true,
@@ -37,9 +40,12 @@ Lista todos los tipos de programa.
 
 ## POST /api/v1/tipos-programa
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Crea un nuevo tipo de programa.
 
 **Body:**
+
 ```json
 {
   "nombre": "Diplomado",
@@ -50,15 +56,16 @@ Crea un nuevo tipo de programa.
 
 **Campos:**
 
-| Campo | Tipo | Obligatorio | Descripcion |
+| Campo | Tipo | Obligatorio | Descripción |
 |-------|------|-------------|-------------|
-| `nombre` | `string` | Si | Nombre del tipo de programa |
-| `cardImageUrl` | `string` | Si | URL de imagen para tarjeta |
-| `heroBgUrl` | `string` | Si | URL de imagen de fondo |
+| `nombre` | `string` | Sí | Nombre del tipo de programa |
+| `cardImageUrl` | `string` | Sí | URL de imagen para tarjeta |
+| `heroBgUrl` | `string` | Sí | URL de imagen de fondo |
 
-**Nota:** El campo `slug` se genera automaticamente desde el `nombre`.
+**Nota:** El campo `slug` se genera automáticamente desde el `nombre`.
 
 **Respuesta (201 Created):**
+
 ```json
 {
   "success": true,
@@ -78,11 +85,13 @@ Crea un nuevo tipo de programa.
 
 ## GET /api/v1/tipos-programa/{slug}
 
-Obtiene un tipo de programa especifico por su slug.
+🌐 **Público**
+
+Obtiene un tipo de programa específico por su slug.
 
 **Posibles errores:**
 
-| Codigo | Causa |
+| Código | Causa |
 |--------|-------|
 | `404` | No existe un tipo de programa con ese slug |
 
@@ -90,17 +99,19 @@ Obtiene un tipo de programa especifico por su slug.
 
 ## PUT /api/v1/tipos-programa/{slug}
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Actualiza un tipo de programa existente.
 
 **Body:** Igual que POST.
 
-**Nota:** El campo `slug` se regenera automaticamente desde el `nombre`.
+**Nota:** El campo `slug` se regenera automáticamente desde el `nombre`.
 
 **Posibles errores:**
 
-| Codigo | Causa |
+| Código | Causa |
 |--------|-------|
-| `400` | `nombre`, `cardImageUrl` o `heroBgUrl` vacios |
+| `400` | `nombre`, `cardImageUrl` o `heroBgUrl` vacíos |
 | `404` | No existe un tipo de programa con ese slug |
 | `409` | El slug generado ya existe (mismo nombre) |
 
@@ -108,10 +119,12 @@ Actualiza un tipo de programa existente.
 
 ## DELETE /api/v1/tipos-programa/{slug}
 
+🔒 **Requiere rol: ADMIN o USER**
+
 Elimina un tipo de programa por su slug.
 
 **Posibles errores:**
 
-| Codigo | Causa |
+| Código | Causa |
 |--------|-------|
 | `404` | No existe un tipo de programa con ese slug |
